@@ -3,7 +3,7 @@ import path from "node:path";
 import { expect, test as base, type BrowserContext, type Page } from "@playwright/test";
 
 const rand = (n: number) => Math.floor(Math.random() * n);
-const randomIp = () => `10.${rand(254) + 1}.${rand(254) + 1}.${rand(254) + 1}`;
+export const randomIp = () => `10.${rand(254) + 1}.${rand(254) + 1}.${rand(254) + 1}`;
 
 export const PASSWORD = "correct-horse-battery";
 

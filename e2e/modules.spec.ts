@@ -1,4 +1,4 @@
-import { expect, registerViaApi, registerViaUi, test, uniqueEmail, PASSWORD } from "./fixtures";
+import { expect, PASSWORD, randomIp, registerViaApi, registerViaUi, test, uniqueEmail } from "./fixtures";
 
 const M08 = "/es/modules/m08-conceptos-seguridad";
 
@@ -109,7 +109,7 @@ test.describe("progreso de lecciones", () => {
     await page.getByRole("button", { name: "Marcar como completada" }).click();
     await expect(page.getByRole("button", { name: "Marcar como pendiente" })).toBeVisible();
 
-    const other = await browser.newContext({ extraHTTPHeaders: { "x-forwarded-for": "10.9.9.9" } });
+    const other = await browser.newContext({ extraHTTPHeaders: { "x-forwarded-for": randomIp() } });
     const p2 = await other.newPage();
     const res = await p2.request.post("/api/auth/register", { data: { email: uniqueEmail("otro"), password: PASSWORD, acceptTerms: true } });
     expect(res.status()).toBe(201);
