@@ -2,7 +2,7 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { navigationModule } from "../../tests/navigation-mock";
+import { navigationModule, router } from "../../tests/navigation-mock";
 import { renderIntl } from "../../tests/dom";
 
 vi.mock("@/i18n/navigation", () => navigationModule);
@@ -31,6 +31,7 @@ const activeSession = (over: Record<string, unknown> = {}) => ({
 const status = (over: Record<string, unknown> = {}) => ({ completed: false, xp: 0, hintsUsed: 0, ...over });
 
 beforeEach(() => {
+  router.refresh.mockReset();
   fetchMock.mockReset();
   vi.stubGlobal("fetch", fetchMock);
 });
@@ -142,8 +143,19 @@ describe("SessionPanel: con sesión activa de este reto", () => {
     await userEvent.type(await screen.findByPlaceholderText("CYBERLAB{...}"), "CYBERLAB{{ok}");
     await userEvent.click(screen.getByRole("button", { name: "Enviar" }));
     expect(await screen.findByText("¡Correcto! +10 XP")).toBeInTheDocument();
+    expect(router.refresh).toHaveBeenCalled();
     await waitFor(() => expect(screen.getByText(/reto completado/i)).toBeInTheDocument());
     expect(screen.queryByPlaceholderText("CYBERLAB{...}")).toBeNull(); // ya no pide bandera
+  });
+
+  it("al acertar refresca los componentes de servidor (encabezado con XP y writeup); al fallar no", async () => {
+    router.refresh.mockReset();
+    routes({ ...base, "POST /api/challenges/bienvenida/flag": () => reply(200, { correct: false }) });
+    renderIntl(<SessionPanel slug="bienvenida" />);
+    await userEvent.type(await screen.findByPlaceholderText("CYBERLAB{...}"), "CYBERLAB{{mal}");
+    await userEvent.click(screen.getByRole("button", { name: "Enviar" }));
+    await screen.findByRole("status");
+    expect(router.refresh).not.toHaveBeenCalled();
   });
 
   it("bandera ya completada: mensaje específico", async () => {

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 
 type Active = { id: string; slug: string; url: string; expiresAt: string };
 type Status = { completed: boolean; xp: number; hintsUsed: number };
@@ -15,6 +15,7 @@ function fmt(ms: number) {
 
 export function SessionPanel({ slug }: { slug: string }) {
   const t = useTranslations("Session");
+  const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [authed, setAuthed] = useState(true);
   const [active, setActive] = useState<Active | null>(null);
@@ -87,6 +88,7 @@ export function SessionPanel({ slug }: { slug: string }) {
         setFlagMsg({ ok: true, text: body.already ? t("flagAlready") : t("flagCorrect", { xp: body.xp ?? 0 }) });
         form.reset();
         await refresh();
+        router.refresh(); // actualiza lo que renderiza el servidor: XP y nivel del encabezado, y el writeup
       } else setFlagMsg({ ok: false, text: t("flagWrong") });
     } catch {
       setError("server");

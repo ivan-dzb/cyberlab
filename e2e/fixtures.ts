@@ -11,10 +11,24 @@ export const PASSWORD = "correct-horse-battery";
  * Cada test usa una IP de origen distinta (X-Forwarded-For) para no agotar el rate limiting por IP
  * (5 registros/hora) al crear muchos usuarios. El límite por cuenta no se ve afectado.
  */
-export const test = base.extend({
+export const test = base.extend<{ autoCleanup: void }>({
   extraHTTPHeaders: async ({}, use) => {
     await use({ "x-forwarded-for": randomIp() });
   },
+  // Tras cada test se termina la sesión de reto que haya quedado activa (no dejar contenedores vivos).
+  autoCleanup: [
+    async ({ page }, use) => {
+      await use();
+      try {
+        const res = await page.request.get("/api/sessions");
+        const active = res.ok() ? (await res.json()).session : null;
+        if (active) await page.request.delete(`/api/sessions/${active.id}`, { data: {} });
+      } catch {
+        // la página o el contexto ya se cerraron
+      }
+    },
+    { auto: true },
+  ],
 });
 export { expect };
 
@@ -82,3 +96,13 @@ export async function endSession(page: Page) {
 }
 
 export const FLAG_RE = /CYBERLAB\{[^}]+\}/;
+
+/** Contenedores de reto vivos para una sesión (consulta directa a Docker). */
+export function liveContainers(sid: string): number {
+  const out = execFileSync("docker", ["ps", "-q", "--filter", `label=cyberlab.session=${sid}`], { encoding: "utf8" }).trim();
+  return out ? out.split("\n").length : 0;
+}
+
+export function dockerCompose(...args: string[]) {
+  execFileSync("docker", ["compose", ...args], { cwd: path.resolve(__dirname, ".."), stdio: "ignore" });
+}
