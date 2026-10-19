@@ -18,7 +18,7 @@ Fuente: plan de desarrollo (Fase 1, oct–nov 2026).
 | US-08 | Como operador quiero logs por sesión y limpieza automática | Tabla `session_event`; reaper destruye sesiones vencidas y reconcilia con Docker | ✅ |
 | US-09 | Como operador quiero pruebas que demuestren el aislamiento | Reto canario `_canary`; script que verifica el aislamiento; falla el CI si se rompe | ✅ |
 
-## Fase 2: Retos de nivel principiante
+## Fase 2: Retos de nivel principiante ✅
 
 Fuente: plan de desarrollo (Fase 2, nov 2026). Primero el sistema de juego (banderas, XP, pistas, writeups) y una prueba automática de que cada reto es resoluble; después los retos.
 

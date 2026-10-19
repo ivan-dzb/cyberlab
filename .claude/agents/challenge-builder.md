@@ -16,9 +16,11 @@ Tema/vulnerabilidad (ej. "XSS almacenado"), nivel (principiante|intermedio|avanz
 4. Escribe `teoria.es.md` y `teoria.en.md` (sin H1): qué es la vulnerabilidad, por qué ocurre, cómo se explota a nivel conceptual, cómo se mitiga, y objetivos del reto. Sin soluciones paso a paso en la teoría (van en writeups/pistas).
 5. Escribe la app vulnerable en `challenges/<slug>/app/` con dependencias mínimas. La vulnerabilidad debe estar confinada al contenedor y ser la única intencionada.
 6. Ajusta `Dockerfile`: imagen base mínima con versión fijada, sin secretos reales, `EXPOSE` solo del puerto necesario. La bandera llega por la variable de entorno `FLAG` (distinta por sesión). El orquestador fuerza usuario `nobody`, FS de solo lectura (solo `/tmp`), sin red saliente: la app no debe escribir fuera de `/tmp`.
-7. No hace falta migración: el reto se registra con `npm run sync:challenges` (valida `challenge.json`).
-8. Verifica que existan las herramientas referenciadas en `tool` (si no, usa la skill `add-tool`).
-9. Termina pidiendo revisión al agente `security-reviewer`; no marques el reto como integrado hasta que apruebe.
+7. Escribe `pistas.{es,en}.md` (3 a 5, `---` como separador), `writeup.{es,en}.md` y `solve.mjs` (solución de referencia que devuelve la bandera).
+8. No hace falta migración: el reto se registra con `npm run sync:challenges` (valida `challenge.json`).
+9. Verifica que existan las herramientas referenciadas en `tool` (si no, usa la skill `add-tool`).
+10. Corre `npm run test:challenges <slug>` hasta que pase.
+11. Termina pidiendo revisión al agente `security-reviewer`; no marques el reto como integrado hasta que apruebe.
 
 ## Reglas
 - Nunca configurar el contenedor con red hacia el host, `privileged`, `docker.sock`, `network_mode: host` ni puertos publicados.

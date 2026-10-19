@@ -65,6 +65,15 @@ imagen solo `cyberlab/*`; usuario `65534` (nobody); FS raíz de solo lectura + `
 
 **Pruebas**: `npm run test:isolation` (19 comprobaciones desde dentro de un contenedor canario `_canary`) corre en CI y falla si se rompe el aislamiento.
 
+## Sistema de juego (Fase 2)
+
+- **Bandera por sesión**: el orquestador inyecta `FLAG` (aleatoria) al contenedor; la BD solo guarda su SHA-256 (`container_session.flag_hash`). `POST /api/challenges/:slug/flag` compara en tiempo constante contra la sesión **activa del propio usuario**, con rate limit (20 por 10 min).
+- **XP y niveles** (`src/lib/xp.ts`): cada reto vale su `xp`; cada pista usada resta un 20 % (mínimo 40 %). Niveles por umbrales de XP acumulado. Se otorga una sola vez por reto.
+- **Pistas**: `pistas.{es,en}.md` (separadas por `---`, máximo 5) sincronizadas a Postgres. El servidor solo devuelve el texto de las ya desbloqueadas; desbloquear es atómico y no se permite tras completar.
+- **Writeup oficial**: `writeup.{es,en}.md`; se entrega solo a quien completó el reto (comprobación en servidor, no viaja en el catálogo).
+- **Perfil**: `/profile` con nivel, XP, retos y lecciones completados; el encabezado muestra nivel y XP.
+- **Calidad de retos**: cada reto trae `solve.mjs`; `npm run test:challenges` inicia una sesión real con una bandera conocida, ejecuta la solución y comprueba que obtiene exactamente esa bandera (corre en CI). Un reto sin `solve.mjs` falla.
+
 ## Autenticación y límites
 
 - Registro/login con correo + contraseña; `scrypt` (N=2^17, r=8, p=1) con sal; sesión = token aleatorio en cookie `httpOnly` + `SameSite=Lax` (+`Secure` en producción), solo se guarda su hash.
@@ -128,10 +137,12 @@ content/modules/m08-conceptos-seguridad/
 
 1. Esqueleto + aislamiento: estructura, auth, rate limiting, términos, progreso, catálogo de retos, orquestador, gateway, reaper, pruebas de aislamiento. **Completada** (ver `docs/user-stories.md`).
 2. Orquestador de contenedores y primer reto de prueba.
-3+. Contenido (retos por nivel), catálogo de herramientas, writeups, progreso/XP.
+2. Retos principiante: sistema de juego (banderas, XP, pistas, writeups), test de resolubilidad y 6 retos. **Completada** (ver `docs/user-stories.md`).
+3+. Catálogo de herramientas, retos intermedio/avanzado, terminal sandbox, pulido.
 
 ## Registro de decisiones
 
 - **2026-10-18** – Next.js App Router + Postgres + SQL plano; migraciones numeradas con runner propio (`scripts/migrate.mjs`).
 - **2026-10-18** – Auth propia pospuesta hasta revisar la estructura; el esquema ya incluye `password_hash`.
+- **2026-10-19** – Fase 2: bandera por sesión con hash, XP con penalización por pistas, writeup servido solo tras completar, `solve.mjs` obligatorio por reto verificado en CI.
 - **2026-10-19** – Fase 1: scrypt nativo (sin dependencias nativas), rate limiting en Postgres, orquestador + gateway separados con redes segmentadas, un origen por sesión de reto, reaper en la app con advisory lock.

@@ -2,7 +2,7 @@
 
 Plataforma web pública y gratuita para aprender pentesting y hacking ético mediante retos prácticos (apps deliberadamente vulnerables) con dificultad progresiva: **Principiante → Intermedio → Avanzado → Experto**. Incluye un catálogo de herramientas de Kali y aislamiento por contenedor Docker por sesión de usuario.
 
-> Estado: **Fase 1 completada** (esqueleto + aislamiento: auth, rate limiting, orquestador, gateway, pruebas de aislamiento). Siguiente: Fase 2, retos de nivel principiante. Ver `docs/architecture.md` y `docs/user-stories.md`.
+> Estado: **Fases 1 y 2 completadas** (esqueleto + aislamiento; sistema de juego y 6 retos principiante). Siguiente: Fase 3, catálogo de herramientas. Ver `docs/architecture.md` y `docs/user-stories.md`.
 
 ## Stack
 
@@ -49,6 +49,7 @@ src/components/      Componentes React
 8. Las vulnerabilidades deliberadas viven **solo** dentro de los contenedores de reto; el código de la plataforma (`src/`) debe ser seguro.
 9. La app web nunca habla con Docker: solo con el orquestador. Los retos se sirven desde su propio origen (`<sid>.lab.*`), nunca desde el origen de la plataforma.
 10. Cualquier cambio en `orchestrator/`, `gateway/` o `docker-compose.yml` exige correr `npm run test:isolation`.
+11. Todo reto nuevo debe traer `solve.mjs` y pasar `npm run test:challenges`; la bandera nunca va hardcodeada (variable `FLAG`).
 
 ## Idiomas y tema
 
@@ -79,6 +80,7 @@ docker compose exec app npm run migrate
 npm run build:challenges                # (host) construye las imágenes de retos
 docker compose exec app npm run sync:challenges
 docker compose exec app npm run test:isolation   # pruebas de aislamiento
+docker compose exec app npm run test:challenges  # cada reto es resoluble (solve.mjs)
 npm run typecheck
 ```
 

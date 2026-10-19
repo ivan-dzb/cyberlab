@@ -6,6 +6,9 @@ Cada reto vive en `challenges/<slug>/`, aislado de los demás y de la plataforma
 challenges/<slug>/
   challenge.json     slug, titulo{es,en}, descripcion{es,en}, nivel, xp, herramientas[], imagen_docker, puerto, limites
   teoria.es.md       teoría (obligatoria)   teoria.en.md  (recomendada; si falta se muestra la de es)
+  pistas.{es,en}.md  3 a 5 pistas separadas por `---`
+  writeup.{es,en}.md solución oficial (se muestra solo tras completar el reto)
+  solve.mjs          solución de referencia verificada por `npm run test:challenges`
   Dockerfile         imagen del reto (base fijada; el orquestador fuerza usuario nobody)
   app/               aplicación deliberadamente vulnerable
 ```
