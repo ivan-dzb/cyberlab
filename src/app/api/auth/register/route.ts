@@ -3,12 +3,16 @@ import { registerSchema } from "@/lib/auth/schemas";
 import { hashPassword } from "@/lib/auth/password";
 import { createSession } from "@/lib/auth/session";
 import { query } from "@/lib/db";
-import { checkSameOrigin, jsonError } from "@/lib/http";
+import { checkSameOrigin, clientIp, jsonError } from "@/lib/http";
+import { enforce } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   if (!checkSameOrigin(req)) return jsonError("badRequest", 400);
   const parsed = registerSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return jsonError("invalidInput", 400);
+
+  const limited = await enforce([{ name: "register-ip", subject: clientIp(req), max: 5, windowSec: 3600 }]);
+  if (limited) return limited;
 
   try {
     const passwordHash = await hashPassword(parsed.data.password);
