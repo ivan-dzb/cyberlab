@@ -59,9 +59,33 @@ Esquema SQL en `db/migrations/0001_initial_schema.sql`. Añadidos sobre el plan:
 - **Tema claro/oscuro**: variables CSS en `src/app/globals.css`. Sin `data-theme` sigue `prefers-color-scheme`; el selector (Sistema/Claro/Oscuro) guarda una cookie `theme` que el layout lee en servidor para evitar parpadeo.
 - Términos técnicos estándar (SQL injection, payload, exploit) se mantienen en inglés en ambos idiomas, con explicación en español la primera vez.
 
+## Identidad visual
+
+Concepto: **expediente + mapa de sectores**. El usuario opera sobre archivos de caso y sube por niveles de acreditación; no se usa pixel-art ni terminal verde.
+
+- **Tipografía** (next/font): Instrument Serif (display/titulares, cursiva para el énfasis), Geist (cuerpo), Geist Mono (etiquetas técnicas, números de módulo, navegación).
+- **Color**: tinta casi negra + hueso (oscuro) / papel de expediente (claro); acento bermellón. Un color por nivel: principiante (azul hielo), intermedio (ámbar), avanzado (bermellón), experto (violeta). Siempre vía variables CSS.
+- **Motivos**: retícula de coordenadas de fondo, marcas de registro en las esquinas de los paneles (`.panel`), barras de censura que se revelan al pasar el cursor (`.redact`), numerales de módulo en contorno, medidor segmentado de acreditación (`Clearance`), botones con esquina cortada.
+- **Pieza firma**: el *mapa de sectores* (`SectorMap`), un SVG con una columna por etapa y un nodo por módulo; los publicados se iluminan y enlazan. La estructura sale de `src/lib/roadmap.ts`.
+- Accesibilidad: foco visible, `prefers-reduced-motion`, contraste revisado en ambos temas (pendiente auditoría formal).
+
 ## Contenido de aprendizaje (módulos)
 
-El contenido sigue `docs/roadmap-aprendizaje.md`. Los módulos y lecciones se guardan como Markdown con frontmatter en `content/modules/<id>-<slug>/` (versionado en git, revisable) y se registran en BD para progreso y relaciones. Entidades previstas (migración futura): `module` (id M##, slug, titulo, nivel, etapa, ultima_revision), `lesson` (module_id, orden, contenido), `module_prerequisite`, `module_challenge`, `quiz_attempt`. Pendiente de diseñar al empezar el Sprint 0 de módulos.
+El contenido sigue `docs/roadmap-aprendizaje.md`. Los módulos y lecciones se guardan como Markdown con frontmatter en `content/modules/<id>-<slug>/` (versionado en git, revisable) y se registran en BD para progreso y relaciones. **Decisión (Sprint 0):** el contenido NO se duplica en BD. `content/modules/<slug>/` es la fuente de verdad:
+
+```
+content/modules/m08-conceptos-seguridad/
+  module.json                 id, slug, titulo{es,en}, descripcion{es,en}, nivel, etapa, prerrequisitos, tiempo_min, ultima_revision, lecciones[] (orden)
+  01-triada-cia.es.md/.en.md  frontmatter: titulo, tiempo_min, ultima_revision
+  fuentes.md                  fuentes consultadas (verificadas vs. secundarias vs. pendientes)
+```
+
+- `src/lib/content.ts` (solo servidor) lee los archivos; los slugs de la URL se validan contra `module.json` (allowlist), nunca se concatenan a rutas del disco.
+- Markdown se renderiza con `react-markdown` (sin HTML crudo) + `remark-gfm` + `rehype-slug`.
+- Rutas: `/[locale]/modules`, `/[locale]/modules/[module]`, `/[locale]/modules/[module]/[lesson]`.
+- `next.config.mjs` incluye `content/**` en el build standalone (`outputFileTracingIncludes`).
+- **Progreso**: provisional en `localStorage` (clave `cyberlab:progress`, `"<modulo>/<leccion>": true`). Al implementar auth pasará a una tabla `lesson_progress(user_id, module_slug, lesson_slug, completado_en)`; la BD solo guardará estado del usuario, no contenido.
+- Entidades futuras en BD: `lesson_progress`, `quiz_attempt`, y la relación módulo↔reto por slug (`challenge.slug`).
 
 ## Fases (resumen)
 

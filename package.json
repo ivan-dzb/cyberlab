@@ -10,11 +10,16 @@
     "migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {
+    "gray-matter": "4.0.3",
     "next": "15.5.4",
     "next-intl": "4.3.9",
     "pg": "8.13.1",
     "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "react-dom": "19.1.1",
+    "react-markdown": "10.1.0",
+    "rehype-slug": "6.0.0",
+    "remark-gfm": "4.0.1",
+    "server-only": "0.0.1"
   },
   "devDependencies": {
     "@types/node": "22.10.2",

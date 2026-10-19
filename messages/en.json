@@ -8,11 +8,71 @@
     "theme": "Theme",
     "themeLight": "Light",
     "themeDark": "Dark",
-    "themeSystem": "System"
+    "themeSystem": "System",
+    "modules": "Modules",
+    "home": "Home"
   },
   "Home": {
-    "title": "CyberLab",
-    "subtitle": "Learn cybersecurity from zero to expert: condensed theory and hands-on challenges in isolated environments.",
-    "status": "Under construction (Phase 1)."
+    "kicker": "Cybersecurity learning platform",
+    "h1a": "Learn",
+    "h1b": "cybersecurity",
+    "h1c": "from zero to expert.",
+    "lead1": "Lessons and hands-on challenges in isolated environments. Each challenge runs on a system that is",
+    "redacted": "vulnerable on purpose",
+    "lead2": "inside its own container.",
+    "cta": "View modules",
+    "ctaMap": "View map",
+    "statModules": "planned modules",
+    "statStages": "stages",
+    "statLevels": "levels",
+    "statLive": "available today",
+    "mapTitle": "Module map",
+    "mapHint": "Each node is a module. Highlighted ones are available now.",
+    "legendOn": "Available",
+    "legendOff": "In preparation",
+    "howTitle": "How it works",
+    "step1t": "Lessons",
+    "step1d": "Theory with cited sources, in Spanish and English.",
+    "step2t": "Challenges",
+    "step2d": "Each challenge runs in an isolated container, with no access to the network or other users.",
+    "step3t": "Progress",
+    "step3d": "Four levels, from beginner to expert. Progress is marked on the map."
+  },
+  "Modules": {
+    "title": "Learning modules",
+    "empty": "No modules published yet.",
+    "minutes": "{n} min",
+    "reviewed": "Reviewed: {date}",
+    "prerequisites": "Prerequisites",
+    "progress": "{done}/{total} lessons",
+    "markDone": "Mark as completed",
+    "markUndone": "Mark as not completed",
+    "fallbackNotice": "This lesson is not translated into your language yet; showing the Spanish version.",
+    "level": {
+      "principiante": "Beginner",
+      "intermedio": "Intermediate",
+      "avanzado": "Advanced",
+      "experto": "Expert"
+    },
+    "kicker": "Catalog",
+    "stage": "Stage {n}"
+  },
+  "Stages": {
+    "aria": "Map of the nine stages and their modules",
+    "available": "available",
+    "soon": "in preparation",
+    "s0": "Foundations",
+    "s1": "Security",
+    "s2": "Web",
+    "s3": "Infra",
+    "s4": "Defense",
+    "s5": "AppSec",
+    "s6": "Cloud",
+    "s7": "Reversing",
+    "s8": "Governance"
+  },
+  "Footer": {
+    "tag": "CYBERLAB · EDUCATIONAL USE",
+    "disclaimer": "Practice only in the platform's labs or on systems you own. Using these techniques against systems without authorization is illegal."
   }
 }

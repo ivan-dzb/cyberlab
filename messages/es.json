@@ -8,11 +8,71 @@
     "theme": "Tema",
     "themeLight": "Claro",
     "themeDark": "Oscuro",
-    "themeSystem": "Sistema"
+    "themeSystem": "Sistema",
+    "modules": "Módulos",
+    "home": "Inicio"
   },
   "Home": {
-    "title": "CyberLab",
-    "subtitle": "Aprende ciberseguridad de cero a experto: teoría condensada y retos prácticos en entornos aislados.",
-    "status": "En construcción (Fase 1)."
+    "kicker": "Plataforma educativa de ciberseguridad",
+    "h1a": "Aprende",
+    "h1b": "ciberseguridad",
+    "h1c": "de cero a experto.",
+    "lead1": "Lecciones y retos prácticos en entornos aislados. Cada reto corre sobre un sistema",
+    "redacted": "vulnerable a propósito",
+    "lead2": "dentro de su propio contenedor.",
+    "cta": "Ver módulos",
+    "ctaMap": "Ver mapa",
+    "statModules": "módulos planeados",
+    "statStages": "etapas",
+    "statLevels": "niveles",
+    "statLive": "disponibles hoy",
+    "mapTitle": "Mapa de módulos",
+    "mapHint": "Cada nodo es un módulo. Los resaltados ya están disponibles.",
+    "legendOn": "Disponible",
+    "legendOff": "En preparación",
+    "howTitle": "Cómo funciona",
+    "step1t": "Lecciones",
+    "step1d": "Teoría con fuentes citadas, en español e inglés.",
+    "step2t": "Retos",
+    "step2d": "Cada reto corre en un contenedor aislado, sin acceso a la red ni a otros usuarios.",
+    "step3t": "Progreso",
+    "step3d": "Cuatro niveles, de principiante a experto. El avance se marca en el mapa."
+  },
+  "Modules": {
+    "title": "Módulos de aprendizaje",
+    "empty": "Aún no hay módulos publicados.",
+    "minutes": "{n} min",
+    "reviewed": "Revisado: {date}",
+    "prerequisites": "Prerrequisitos",
+    "progress": "{done}/{total} lecciones",
+    "markDone": "Marcar como completada",
+    "markUndone": "Marcar como pendiente",
+    "fallbackNotice": "Esta lección aún no está traducida a tu idioma; se muestra en español.",
+    "level": {
+      "principiante": "Principiante",
+      "intermedio": "Intermedio",
+      "avanzado": "Avanzado",
+      "experto": "Experto"
+    },
+    "kicker": "Catálogo",
+    "stage": "Etapa {n}"
+  },
+  "Stages": {
+    "aria": "Mapa de las nueve etapas y sus módulos",
+    "available": "disponible",
+    "soon": "en preparación",
+    "s0": "Fundamentos",
+    "s1": "Seguridad",
+    "s2": "Web",
+    "s3": "Infra",
+    "s4": "Defensa",
+    "s5": "AppSec",
+    "s6": "Cloud",
+    "s7": "Reversing",
+    "s8": "Gobierno"
+  },
+  "Footer": {
+    "tag": "CYBERLAB · USO EDUCATIVO",
+    "disclaimer": "Practica solo en los laboratorios de la plataforma o en sistemas propios. Usar estas técnicas contra sistemas ajenos sin autorización es ilegal."
   }
 }

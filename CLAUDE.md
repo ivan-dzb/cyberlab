@@ -49,6 +49,10 @@ src/components/      Componentes React
 
 La plataforma es bilingüe (es/en) y tiene modo claro/oscuro. Reglas: texto de UI solo vía `messages/{es,en}.json` (mismas claves en ambos); contenido largo en `*.es.md` + `*.en.md`; textos de BD en `jsonb {es,en}`; colores solo con variables CSS de `globals.css` (nunca hex sueltos en componentes). Detalle en `docs/architecture.md`.
 
+## Diseño
+
+Identidad "expediente + mapa de sectores" (ver `docs/architecture.md`, sección Identidad visual). Reutiliza las clases de `globals.css` (`.panel`, `.label`, `.clearance`, `.btn`, `.redact`) antes de crear estilos nuevos. Sin pixel-art, sin verde de terminal, sin hex sueltos.
+
 ## Contenido educativo
 
 La plataforma es **aprendizaje + retos**. El plan de contenido está en `docs/roadmap-aprendizaje.md` (módulos M01–M52). Los módulos se construyen uno a uno con la skill `build-module`: investigar fuentes primarias actuales, condensar teoría en `content/modules/<id>-<slug>/`, y añadir labs/retos/quiz. Todo contenido ofensivo se enseña contra objetivos de laboratorio propios.

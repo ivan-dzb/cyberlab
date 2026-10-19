@@ -1,0 +1,24 @@
+{
+  "id": "M08",
+  "slug": "m08-conceptos-seguridad",
+  "titulo": {
+    "es": "Conceptos y principios de seguridad",
+    "en": "Security concepts and principles"
+  },
+  "descripcion": {
+    "es": "El vocabulario y los modelos mentales que usa todo profesional: tríada CIA, riesgo, principios de diseño seguro, actores de amenaza y el ecosistema CVE/CWE/CVSS/EPSS/KEV.",
+    "en": "The vocabulary and mental models every professional uses: the CIA triad, risk, secure design principles, threat actors and the CVE/CWE/CVSS/EPSS/KEV ecosystem."
+  },
+  "nivel": "principiante",
+  "etapa": 1,
+  "prerrequisitos": [],
+  "tiempo_min": 120,
+  "ultima_revision": "2026-10-18",
+  "lecciones": [
+    "01-triada-cia",
+    "02-riesgo",
+    "03-principios-de-diseno",
+    "04-actores-de-amenaza",
+    "05-vocabulario-de-vulnerabilidades"
+  ]
+}
