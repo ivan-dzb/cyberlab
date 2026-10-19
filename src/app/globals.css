@@ -303,3 +303,6 @@ a.panel:hover::before, a.panel:hover::after { width: 22px; height: 22px; }
 .tools .account { max-width: 12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .nav-link { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; }
 @media (max-width: 640px) { .tools .account { display: none; } }
+
+.form label.check { display: flex; gap: 0.6rem; align-items: flex-start; }
+.form label.check input { margin-top: 0.35rem; accent-color: var(--accent); }

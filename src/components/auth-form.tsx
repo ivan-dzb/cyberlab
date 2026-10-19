@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const t = useTranslations("Auth");
@@ -19,7 +19,11 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       const res = await fetch(`/api/auth/${mode}`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: form.get("email"), password: form.get("password") }),
+        body: JSON.stringify({
+          email: form.get("email"),
+          password: form.get("password"),
+          ...(mode === "register" ? { acceptTerms: form.get("terms") === "on" } : {}),
+        }),
       });
       if (res.ok) {
         router.push("/modules");
@@ -53,6 +57,14 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         />
         {mode === "register" && <small className="muted">{t("passwordHint")}</small>}
       </label>
+      {mode === "register" && (
+        <label className="check">
+          <input name="terms" type="checkbox" required />
+          <span>
+            {t("acceptPrefix")} <Link href="/terms" target="_blank">{t("termsLink")}</Link>
+          </span>
+        </label>
+      )}
       {error && (
         <p role="alert" className="form-error">
           {t(`errors.${error}` as never)}

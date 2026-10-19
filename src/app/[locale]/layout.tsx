@@ -6,6 +6,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { SiteHeader } from "@/components/site-header";
+import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -58,6 +59,9 @@ export default async function LocaleLayout({
             <div className="wrap">
               <p className="label">{tFooter("tag")}</p>
               <p className="muted">{tFooter("disclaimer")}</p>
+              <p>
+                <Link href="/terms" className="label">{tFooter("terms")}</Link>
+              </p>
             </div>
           </footer>
         </NextIntlClientProvider>

@@ -74,7 +74,8 @@
   },
   "Footer": {
     "tag": "CYBERLAB · USO EDUCATIVO",
-    "disclaimer": "Practica solo en los laboratorios de la plataforma o en sistemas propios. Usar estas técnicas contra sistemas ajenos sin autorización es ilegal."
+    "disclaimer": "Practica solo en los laboratorios de la plataforma o en sistemas propios. Usar estas técnicas contra sistemas ajenos sin autorización es ilegal.",
+    "terms": "Términos de uso"
   },
   "Auth": {
     "loginTitle": "Iniciar sesión",
@@ -90,12 +91,15 @@
     "loginLink": "Iniciar sesión",
     "logout": "Salir",
     "errors": {
-      "invalidInput": "Revisa el correo y que la contraseña tenga al menos 10 caracteres.",
+      "invalidInput": "Revisa el correo y que la contraseña tenga al menos 10 caracteres. Debes aceptar los términos.",
       "registerFailed": "No se pudo crear la cuenta. Si ya tienes una, inicia sesión.",
       "invalidCredentials": "Correo o contraseña incorrectos.",
       "rateLimited": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
       "badRequest": "Solicitud no válida.",
       "server": "Error del servidor. Inténtalo de nuevo."
-    }
+    },
+    "acceptPrefix": "Acepto los",
+    "termsLink": "términos de uso",
+    "termsVersion": "Versión de los términos: {version}"
   }
 }
