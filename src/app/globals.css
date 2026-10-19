@@ -302,7 +302,12 @@ a.panel:hover::before, a.panel:hover::after { width: 22px; height: 22px; }
 .tools { align-items: center; }
 .tools .account { max-width: 12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .nav-link { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; }
-@media (max-width: 640px) { .tools .account { display: none; } }
+@media (max-width: 640px) {
+  /* Móvil: el encabezado pasa a dos filas (marca + navegación / controles) en vez de desbordar. */
+  .site-header .wrap { height: auto; flex-wrap: wrap; padding-block: 0.6rem; gap: 0.5rem 1rem; }
+  .nav { flex: 1; }
+  .tools { flex-wrap: wrap; width: 100%; gap: 0.4rem; }
+}
 
 .form label.check { display: flex; gap: 0.6rem; align-items: flex-start; }
 .form label.check input { margin-top: 0.35rem; accent-color: var(--accent); }

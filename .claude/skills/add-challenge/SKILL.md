@@ -21,7 +21,7 @@ Entrada: tema, nivel (principiante|intermedio|avanzado|experto), herramientas de
 6. **Registro** – `docker compose exec app npm run sync:challenges` (valida el JSON con zod y hace upsert; no hay migración por reto).
 7. **Resolubilidad** – `docker compose exec app npm run test:challenges <slug>` debe pasar (inicia una sesión real, ejecuta `solve.mjs` y compara con la bandera inyectada).
 8. **Prueba end-to-end** – inicia sesión en la plataforma, abre `/challenges/<slug>`, pulsa *Iniciar reto*, abre el reto, comprueba que se puede resolver y termina la sesión.
-9. **Aislamiento** – `docker compose exec app npm run test:isolation` debe seguir en verde.
+9. **Aislamiento y pruebas** – `docker compose exec app npm run test:isolation` y `npm test` (incluye la integridad de `challenges/`) deben seguir en verde; añade el reto a `e2e/solve-challenges.spec.ts` si aporta una técnica nueva.
 10. **Documentar** – añade una línea en `docs/architecture.md` solo si el reto introduce un patrón nuevo.
 
 Criterio de terminado: carpeta creada, revisión APROBADA, imagen construida, reto sincronizado, `test:challenges` y `test:isolation` en verde, y el reto resoluble desde la plataforma.

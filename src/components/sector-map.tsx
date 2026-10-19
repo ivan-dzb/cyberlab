@@ -15,7 +15,7 @@ export async function SectorMap({ published }: { published: Record<string, strin
   const height = TOP + rows * ROW_H + 16;
 
   return (
-    <svg className="sector-map" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={t("aria")}>
+    <svg className="sector-map" viewBox={`0 0 ${width} ${height}`} role="group" aria-label={t("aria")}>
       {STAGES.map((s, ci) => {
         const x = LEFT + ci * COL_W;
         const count = s.to - s.from + 1;

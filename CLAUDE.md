@@ -82,6 +82,8 @@ docker compose exec app npm run sync:challenges
 docker compose exec app npm run test:isolation   # pruebas de aislamiento
 docker compose exec app npm run test:challenges  # cada reto es resoluble (solve.mjs)
 npm run typecheck
+npm test                                # unitarias (Vitest); `npm run test:coverage`
+npm run test:e2e                        # Playwright contra la pila levantada (ver docs/testing.md)
 ```
 
 Si cambian las dependencias: `docker compose up -d --build -V app` (renueva el volumen de node_modules).

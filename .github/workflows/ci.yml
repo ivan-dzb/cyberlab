@@ -6,7 +6,8 @@ on:
   pull_request:
 
 jobs:
-  typecheck:
+  # Tipos y pruebas unitarias (sin Docker).
+  unit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,15 +17,19 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run typecheck
+      - run: npm run test:coverage
 
-  # Falla si se rompe el aislamiento de los contenedores de reto (US-09).
-  isolation:
+  # Pila completa: aislamiento (US-09), retos resolubles (US-14) y pruebas end-to-end con Playwright.
+  integration:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+      - run: npm ci
       - name: Create .env with throwaway secrets
         run: |
           {
@@ -36,12 +41,27 @@ jobs:
         run: node scripts/build-challenges.mjs
       - name: Start the stack
         run: docker compose up -d --build
-      - name: Apply migrations
-        run: docker compose exec -T app npm run migrate
+      - name: Apply migrations and sync challenges
+        run: |
+          docker compose exec -T app npm run migrate
+          docker compose exec -T app npm run sync:challenges
       - name: Isolation tests
         run: docker compose exec -T app npm run test:isolation
       - name: Every challenge is solvable
         run: docker compose exec -T app npm run test:challenges
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: End-to-end tests
+        run: npx playwright test
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
       - name: Dump logs on failure
         if: failure()
-        run: docker compose logs --tail 100
+        run: docker compose logs --tail 150

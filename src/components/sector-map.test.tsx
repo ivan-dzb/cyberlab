@@ -57,9 +57,9 @@ describe("SectorMap", () => {
     expect(container.querySelector("title")?.textContent).toBe("M01 — en preparación");
   });
 
-  it("es accesible: role=img con etiqueta", async () => {
-    const { container } = await renderMap({});
-    expect(container.querySelector("svg")).toHaveAttribute("role", "img");
+  it("es accesible: role=group con etiqueta (los nodos publicados son enlaces; role=img los anidaría)", async () => {
+    const { container } = await renderMap({ M08: "m08-conceptos-seguridad" });
+    expect(container.querySelector("svg")).toHaveAttribute("role", "group");
     expect(container.querySelector("svg")).toHaveAttribute("aria-label", "Mapa de las nueve etapas y sus módulos");
   });
 });

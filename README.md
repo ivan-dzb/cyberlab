@@ -27,6 +27,15 @@ docker compose exec app npm run test:isolation   # verifica el aislamiento (19 c
 
 Abre http://localhost:3000 y comprueba http://localhost:3000/api/health. Los retos se abren en `http://<sesión>.lab.localhost:8081` (los navegadores resuelven `*.localhost` a tu máquina).
 
+## Pruebas
+
+```bash
+npm test                # unitarias
+npm run test:e2e        # end-to-end con Playwright (requiere la pila levantada)
+```
+
+Detalle en [docs/testing.md](docs/testing.md).
+
 ## Estructura
 
 Ver `CLAUDE.md`. Agentes en `.claude/agents/`, skills en `.claude/skills/`, migraciones en `db/migrations/`, retos en `challenges/`.

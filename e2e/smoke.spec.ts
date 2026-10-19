@@ -18,7 +18,7 @@ test.describe("humo: la plataforma responde", () => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Aprende ciberseguridad");
     await expect(page.getByRole("link", { name: "Ver módulos" })).toBeVisible();
     await expect(page.getByText("módulos planeados")).toBeVisible();
-    await expect(page.getByRole("img", { name: /mapa de las nueve etapas/i })).toBeVisible();
+    await expect(page.getByRole("group", { name: /mapa de las nueve etapas/i })).toBeVisible();
     // M08 está publicado: su nodo enlaza al módulo
     await page.locator('svg a[href$="/modules/m08-conceptos-seguridad"]').click();
     await expect(page).toHaveURL(/\/modules\/m08-conceptos-seguridad$/);
