@@ -12,7 +12,7 @@ Fuente: plan de desarrollo (Fase 1, oct–nov 2026). Cada historia se entrega en
 | US-06 | Como usuario quiero iniciar un reto en un entorno propio y aislado | Orquestador separado crea un contenedor por sesión en una red `internal`, con límites de CPU/memoria/pids, `cap_drop ALL`, usuario no-root, FS solo lectura; la app web nunca toca el socket de Docker; registro en `container_session` | ✅ |
 | US-07 | Como usuario quiero abrir mi reto desde el navegador | Gateway enruta `/play/<sesión>` solo al contenedor de ese usuario; pantalla con tiempo restante, botón de terminar y extender | ✅ |
 | US-08 | Como operador quiero logs por sesión y limpieza automática | Tabla `session_event`; reaper destruye sesiones vencidas y reconcilia con Docker; timeout por inactividad | ✅ |
-| US-09 | Como operador quiero pruebas que demuestren el aislamiento | Reto canario `_canary`; script que verifica: sin Internet, sin acceso al host, a la BD, al orquestador ni a otras sesiones; falla el CI si se rompe | ☐ |
+| US-09 | Como operador quiero pruebas que demuestren el aislamiento | Reto canario `_canary`; script que verifica: sin Internet, sin acceso al host, a la BD, al orquestador ni a otras sesiones; falla el CI si se rompe | ✅ |
 
 ## Fuera de alcance de la Fase 1
 Retos con vulnerabilidades reales (Fase 2), catálogo de herramientas poblado (Fase 3), terminal sandbox (Fase 5).

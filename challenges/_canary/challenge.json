@@ -1,0 +1,19 @@
+{
+  "slug": "_canary",
+  "titulo": { "es": "Canario de aislamiento", "en": "Isolation canary" },
+  "descripcion": {
+    "es": "Uso interno: verifica el aislamiento de los contenedores de reto. No es visible en el catálogo.",
+    "en": "Internal use: verifies challenge container isolation. Not visible in the catalog."
+  },
+  "nivel": "principiante",
+  "xp": 0,
+  "herramientas": [],
+  "imagen_docker": "cyberlab/canary:latest",
+  "puerto": 8080,
+  "limites": {
+    "memoria_mb": 64,
+    "cpus": 0.25,
+    "pids": 32,
+    "timeout_inactividad_min": 5
+  }
+}

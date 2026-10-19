@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+
+  # Falla si se rompe el aislamiento de los contenedores de reto (US-09).
+  isolation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Create .env with throwaway secrets
+        run: |
+          {
+            echo "POSTGRES_PASSWORD=$(openssl rand -hex 16)"
+            echo "ORCH_TOKEN=$(openssl rand -hex 32)"
+            echo "GATEWAY_TOKEN=$(openssl rand -hex 32)"
+          } > .env
+      - name: Build challenge images
+        run: node scripts/build-challenges.mjs
+      - name: Start the stack
+        run: docker compose up -d --build
+      - name: Apply migrations
+        run: docker compose exec -T app npm run migrate
+      - name: Isolation tests
+        run: docker compose exec -T app npm run test:isolation
+      - name: Dump logs on failure
+        if: failure()
+        run: docker compose logs --tail 100
