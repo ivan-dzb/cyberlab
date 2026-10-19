@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Clearance } from "@/components/clearance";
+import { HintsPanel } from "@/components/hints-panel";
 import { Markdown } from "@/components/markdown";
 import { SessionPanel } from "@/components/session-panel";
 import { Link } from "@/i18n/navigation";
@@ -36,6 +37,7 @@ export default async function ChallengePage({
         </div>
         <Markdown>{c.teoria}</Markdown>
         <SessionPanel slug={c.slug} />
+        <HintsPanel slug={c.slug} baseXp={c.xp} />
       </article>
     </main>
   );

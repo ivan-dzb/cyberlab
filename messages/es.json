@@ -151,5 +151,12 @@
     "noLessons": "Aún no has completado ninguna lección.",
     "goModules": "Ver módulos",
     "headerLevel": "Nv. {level} · {xp} XP"
+  },
+  "Hints": {
+    "title": "Pistas",
+    "hint": "Pista {n}",
+    "reveal": "Revelar siguiente pista (el reto valdrá {xp} XP)",
+    "confirm": "Revelar una pista reduce el XP de este reto a {xp}. ¿Continuar?",
+    "error": "No se pudo revelar la pista."
   }
 }

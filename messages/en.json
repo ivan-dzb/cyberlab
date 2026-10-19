@@ -151,5 +151,12 @@
     "noLessons": "You have not completed any lesson yet.",
     "goModules": "View modules",
     "headerLevel": "Lv. {level} · {xp} XP"
+  },
+  "Hints": {
+    "title": "Hints",
+    "hint": "Hint {n}",
+    "reveal": "Reveal next hint (the challenge will be worth {xp} XP)",
+    "confirm": "Revealing a hint lowers this challenge's XP to {xp}. Continue?",
+    "error": "Could not reveal the hint."
   }
 }

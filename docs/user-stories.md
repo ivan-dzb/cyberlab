@@ -26,7 +26,7 @@ Fuente: plan de desarrollo (Fase 2, nov 2026). Primero el sistema de juego (band
 |---|---|---|---|
 | US-10 | Como usuario quiero enviar la bandera de mi sesión y ganar XP | `POST /api/challenges/:slug/flag` compara contra el hash de la sesión activa (tiempo constante); marca el reto completado una sola vez; XP según pistas usadas; rate limit por usuario | ✅ |
 | US-11 | Como usuario quiero ver mi perfil con XP, nivel y retos completados | Página `/profile`; nivel por umbrales de XP; lista de retos y lecciones completados; XP visible en el encabezado | ✅ |
-| US-12 | Como usuario quiero pistas escalonadas si me atasco | Pistas por reto en es/en; se desbloquean una a una; cada pista reduce el XP (mínimo 40 %); estado guardado en BD | ☐ |
+| US-12 | Como usuario quiero pistas escalonadas si me atasco | Pistas por reto en es/en; se desbloquean una a una; cada pista reduce el XP (mínimo 40 %); estado guardado en BD | ✅ |
 | US-13 | Como usuario quiero ver el writeup oficial después de completar un reto | `writeup.{es,en}.md` por reto; la API solo lo entrega a quien completó el reto | ☐ |
 | US-14 | Como mantenedor quiero comprobar automáticamente que cada reto es resoluble | `solve.mjs` por reto; `npm run test:challenges` inicia cada reto, lo resuelve y verifica que obtiene la bandera de esa sesión; corre en CI | ☐ |
 | US-15 | Como estudiante quiero el reto **robots-secretas** (reconocimiento web) | Descubrir rutas ocultas vía `robots.txt`; teoría, 3 pistas, writeup y `solve.mjs` | ☐ |

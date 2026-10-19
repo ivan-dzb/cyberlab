@@ -58,6 +58,25 @@ try {
       const t = await read(path.join(root, dir.name, `teoria.${l}.md`));
       if (t) teoria[l] = t;
     }
+    // Pistas: un archivo por idioma, pistas separadas por una línea "---".
+    const pistas = {};
+    const writeup = {};
+    for (const l of ["es", "en"]) {
+      const p = await read(path.join(root, dir.name, `pistas.${l}.md`));
+      if (p) pistas[l] = p.split(/^---\s*$/m).map((x) => x.trim()).filter(Boolean);
+      const w = await read(path.join(root, dir.name, `writeup.${l}.md`));
+      if (w) writeup[l] = w;
+    }
+    if (pistas.es && pistas.en && pistas.es.length !== pistas.en.length) {
+      console.error(`✗ ${dir.name}: pistas es (${pistas.es.length}) y en (${pistas.en.length}) deben tener el mismo número`);
+      failed = true;
+      continue;
+    }
+    if ((pistas.es ?? []).length > 5) {
+      console.error(`✗ ${dir.name}: máximo 5 pistas`);
+      failed = true;
+      continue;
+    }
     if (!teoria.es) {
       console.error(`✗ ${dir.name}: falta teoria.es.md`);
       failed = true;
@@ -67,13 +86,14 @@ try {
     await client.query("BEGIN");
     try {
       const { rows } = await client.query(
-        `INSERT INTO challenge (slug, titulo, descripcion, nivel, teoria_md, imagen_docker, xp, puerto, limites, visible)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        `INSERT INTO challenge (slug, titulo, descripcion, nivel, teoria_md, imagen_docker, xp, puerto, limites, visible, pistas, writeup)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
          ON CONFLICT (slug) DO UPDATE SET titulo = EXCLUDED.titulo, descripcion = EXCLUDED.descripcion,
            nivel = EXCLUDED.nivel, teoria_md = EXCLUDED.teoria_md, imagen_docker = EXCLUDED.imagen_docker,
-           xp = EXCLUDED.xp, puerto = EXCLUDED.puerto, limites = EXCLUDED.limites, visible = EXCLUDED.visible
+           xp = EXCLUDED.xp, puerto = EXCLUDED.puerto, limites = EXCLUDED.limites, visible = EXCLUDED.visible,
+           pistas = EXCLUDED.pistas, writeup = EXCLUDED.writeup
          RETURNING id`,
-        [c.slug, c.titulo, c.descripcion, c.nivel, teoria, c.imagen_docker, c.xp, c.puerto, c.limites, !c.slug.startsWith("_")],
+        [c.slug, c.titulo, c.descripcion, c.nivel, teoria, c.imagen_docker, c.xp, c.puerto, c.limites, !c.slug.startsWith("_"), pistas, writeup],
       );
       const id = rows[0].id;
       await client.query("DELETE FROM challenge_tool WHERE challenge_id = $1", [id]);
