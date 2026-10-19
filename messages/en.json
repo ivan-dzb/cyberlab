@@ -127,7 +127,15 @@
       "server": "Could not complete the action. Try again.",
       "badRequest": "Invalid request.",
       "invalidInput": "Invalid request.",
-      "unauthorized": "Log in again."
-    }
+      "unauthorized": "Log in again.",
+      "noSession": "Start the challenge before submitting the flag."
+    },
+    "flagLabel": "Flag",
+    "flagSubmit": "Submit",
+    "flagCorrect": "Correct! +{xp} XP",
+    "flagAlready": "Correct. You had already completed this challenge.",
+    "flagWrong": "That is not the flag.",
+    "completed": "Challenge completed",
+    "xpAwarded": "{xp} XP"
   }
 }

@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 type Active = { id: string; slug: string; url: string; expiresAt: string };
+type Status = { completed: boolean; xp: number; hintsUsed: number };
 const json = { "content-type": "application/json" };
 
 function fmt(ms: number) {
@@ -17,8 +18,10 @@ export function SessionPanel({ slug }: { slug: string }) {
   const [loaded, setLoaded] = useState(false);
   const [authed, setAuthed] = useState(true);
   const [active, setActive] = useState<Active | null>(null);
+  const [status, setStatus] = useState<Status | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [flagMsg, setFlagMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [now, setNow] = useState(() => Date.now());
 
   const refresh = useCallback(async () => {
@@ -26,13 +29,15 @@ export function SessionPanel({ slug }: { slug: string }) {
       const res = await fetch("/api/sessions");
       if (res.status === 401) {
         setAuthed(false);
-      } else if (res.ok) {
-        setActive((await res.json()).session);
+        return;
       }
+      if (res.ok) setActive((await res.json()).session);
+      const st = await fetch(`/api/challenges/${slug}/status`);
+      if (st.ok) setStatus(await st.json());
     } finally {
       setLoaded(true);
     }
-  }, []);
+  }, [slug]);
 
   useEffect(() => {
     void refresh();
@@ -52,6 +57,7 @@ export function SessionPanel({ slug }: { slug: string }) {
   async function act(fn: () => Promise<Response>) {
     setBusy(true);
     setError(null);
+    setFlagMsg(null);
     try {
       const res = await fn();
       if (!res.ok) {
@@ -59,6 +65,29 @@ export function SessionPanel({ slug }: { slug: string }) {
         setError(body.error ?? "server");
       }
       await refresh();
+    } catch {
+      setError("server");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function submitFlag(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const flag = new FormData(form).get("flag");
+    setBusy(true);
+    setError(null);
+    setFlagMsg(null);
+    try {
+      const res = await fetch(`/api/challenges/${slug}/flag`, { method: "POST", headers: json, body: JSON.stringify({ flag }) });
+      const body = (await res.json().catch(() => ({}))) as { correct?: boolean; already?: boolean; xp?: number; error?: string };
+      if (!res.ok) setError(body.error ?? "server");
+      else if (body.correct) {
+        setFlagMsg({ ok: true, text: body.already ? t("flagAlready") : t("flagCorrect", { xp: body.xp ?? 0 }) });
+        form.reset();
+        await refresh();
+      } else setFlagMsg({ ok: false, text: t("flagWrong") });
     } catch {
       setError("server");
     } finally {
@@ -80,6 +109,11 @@ export function SessionPanel({ slug }: { slug: string }) {
   const mine = active?.slug === slug;
   return (
     <div className="panel session-panel">
+      {status?.completed && (
+        <p className="label done">
+          ✓ {t("completed")} · {t("xpAwarded", { xp: status.xp })}
+        </p>
+      )}
       {!active && (
         <>
           <p className="muted">{t("intro")}</p>
@@ -103,6 +137,22 @@ export function SessionPanel({ slug }: { slug: string }) {
               {t("open")} ↗
             </a>
           </p>
+          {!status?.completed && (
+            <form onSubmit={submitFlag} className="flag-form">
+              <label>
+                <span className="label">{t("flagLabel")}</span>
+                <input name="flag" type="text" required maxLength={200} placeholder="CYBERLAB{...}" autoComplete="off" spellCheck={false} />
+              </label>
+              <button className="btn ghost" type="submit" disabled={busy}>
+                {t("flagSubmit")}
+              </button>
+            </form>
+          )}
+          {flagMsg && (
+            <p role="status" className={flagMsg.ok ? "flag-ok" : "form-error"}>
+              {flagMsg.text}
+            </p>
+          )}
           <div className="meta">
             <button
               className="btn ghost"

@@ -127,7 +127,15 @@
       "server": "No se pudo completar la acción. Inténtalo de nuevo.",
       "badRequest": "Solicitud no válida.",
       "invalidInput": "Solicitud no válida.",
-      "unauthorized": "Inicia sesión de nuevo."
-    }
+      "unauthorized": "Inicia sesión de nuevo.",
+      "noSession": "Inicia el reto antes de enviar la bandera."
+    },
+    "flagLabel": "Bandera",
+    "flagSubmit": "Enviar",
+    "flagCorrect": "¡Correcto! +{xp} XP",
+    "flagAlready": "Correcto. Ya habías completado este reto.",
+    "flagWrong": "Esa no es la bandera.",
+    "completed": "Reto completado",
+    "xpAwarded": "{xp} XP"
   }
 }

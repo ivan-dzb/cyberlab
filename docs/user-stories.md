@@ -24,7 +24,7 @@ Fuente: plan de desarrollo (Fase 2, nov 2026). Primero el sistema de juego (band
 
 | ID | Historia | Criterios de aceptación | Estado |
 |---|---|---|---|
-| US-10 | Como usuario quiero enviar la bandera de mi sesión y ganar XP | `POST /api/challenges/:slug/flag` compara contra el hash de la sesión activa (tiempo constante); marca el reto completado una sola vez; XP según pistas usadas; rate limit por usuario | ☐ |
+| US-10 | Como usuario quiero enviar la bandera de mi sesión y ganar XP | `POST /api/challenges/:slug/flag` compara contra el hash de la sesión activa (tiempo constante); marca el reto completado una sola vez; XP según pistas usadas; rate limit por usuario | ✅ |
 | US-11 | Como usuario quiero ver mi perfil con XP, nivel y retos completados | Página `/profile`; nivel por umbrales de XP; lista de retos y lecciones completados; XP visible en el encabezado | ☐ |
 | US-12 | Como usuario quiero pistas escalonadas si me atasco | Pistas por reto en es/en; se desbloquean una a una; cada pista reduce el XP (mínimo 40 %); estado guardado en BD | ☐ |
 | US-13 | Como usuario quiero ver el writeup oficial después de completar un reto | `writeup.{es,en}.md` por reto; la API solo lo entrega a quien completó el reto | ☐ |

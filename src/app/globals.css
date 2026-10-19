@@ -310,3 +310,10 @@ a.panel:hover::before, a.panel:hover::after { width: 22px; height: 22px; }
 .session-panel { margin-top: 2.5rem; display: grid; gap: 0.9rem; }
 .session-panel p { margin: 0; }
 .session-panel .label b { color: var(--fg); font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+
+.flag-form { display: grid; gap: 0.6rem; max-width: 26rem; }
+.flag-form label { display: grid; gap: 0.35rem; }
+.flag-form input { background: var(--bg); color: var(--fg); border: 1px solid var(--line-2); border-radius: 0; padding: 0.6rem 0.75rem; font-family: var(--font-mono); font-size: 0.9rem; }
+.flag-form input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--glow); }
+.flag-ok { margin: 0; color: var(--c-principiante); font-family: var(--font-mono); font-size: 0.9rem; }
+.label.done { color: var(--c-principiante); }

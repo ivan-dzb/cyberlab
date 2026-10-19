@@ -1,7 +1,7 @@
 import "server-only";
 import { query } from "@/lib/db";
 
-export type SessionEventType = "inicio" | "extension" | "fin" | "expiracion" | "error" | "trafico_alto" | "huerfana";
+export type SessionEventType = "inicio" | "extension" | "fin" | "expiracion" | "error" | "trafico_alto" | "huerfana" | "bandera_ok";
 
 /** Registra un evento de sesión. Nunca debe romper el flujo principal. */
 export async function logSessionEvent(
