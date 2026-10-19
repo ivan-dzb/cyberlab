@@ -1,64 +1,105 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 
-// Progreso provisional en localStorage hasta que exista autenticación (luego pasa a BD).
-const KEY = "cyberlab:progress";
-const EVENT = "cyberlab:progress-change";
+/*
+  Progreso de lecciones. Con sesión iniciada vive en la BD (/api/progress); sin sesión,
+  en localStorage. Al iniciar sesión, el progreso local se importa una vez y se limpia.
+*/
+const LS_KEY = "cyberlab:progress";
 
-function read(): Record<string, true> {
+type State = { keys: ReadonlySet<string>; mode: "loading" | "server" | "local" };
+const EMPTY: State = { keys: new Set(), mode: "loading" };
+
+let state: State = EMPTY;
+let started = false;
+const listeners = new Set<() => void>();
+
+function set(next: State) {
+  state = next;
+  listeners.forEach((l) => l());
+}
+
+function readLocal(): string[] {
   try {
-    return JSON.parse(localStorage.getItem(KEY) ?? "{}");
+    return Object.keys(JSON.parse(localStorage.getItem(LS_KEY) ?? "{}"));
   } catch {
-    return {};
+    return [];
   }
 }
 
-function subscribe(cb: () => void) {
-  window.addEventListener(EVENT, cb);
-  window.addEventListener("storage", cb);
-  return () => {
-    window.removeEventListener(EVENT, cb);
-    window.removeEventListener("storage", cb);
-  };
-}
-
-function snapshot(): string {
+function writeLocal(keys: ReadonlySet<string>) {
   try {
-    return localStorage.getItem(KEY) ?? "{}";
+    localStorage.setItem(LS_KEY, JSON.stringify(Object.fromEntries([...keys].map((k) => [k, true]))));
   } catch {
-    return "{}";
+    // almacenamiento no disponible
   }
 }
 
-function useProgress(): Record<string, true> {
-  const raw = useSyncExternalStore(subscribe, snapshot, () => "{}");
+const json = { "content-type": "application/json" };
+
+async function init() {
+  if (started) return;
+  started = true;
   try {
-    return JSON.parse(raw);
+    const res = await fetch("/api/progress");
+    if (res.ok) {
+      const local = readLocal();
+      if (local.length) {
+        await fetch("/api/progress", { method: "POST", headers: json, body: JSON.stringify({ keys: local }) });
+        try {
+          localStorage.removeItem(LS_KEY);
+        } catch {
+          // ignorar
+        }
+      }
+      const data = local.length ? await (await fetch("/api/progress")).json() : await res.json();
+      set({ keys: new Set<string>(data.keys), mode: "server" });
+      return;
+    }
   } catch {
-    return {};
+    // sin red: modo local
   }
+  set({ keys: new Set(readLocal()), mode: "local" });
+}
+
+async function toggle(key: string) {
+  const done = !state.keys.has(key);
+  const keys = new Set(state.keys);
+  if (done) keys.add(key);
+  else keys.delete(key);
+  const prev = state;
+  set({ ...state, keys });
+  if (state.mode === "local") return writeLocal(keys);
+  try {
+    const res = await fetch("/api/progress", { method: "PUT", headers: json, body: JSON.stringify({ key, done }) });
+    if (!res.ok) set(prev);
+  } catch {
+    set(prev);
+  }
+}
+
+function useProgress(): State {
+  const s = useSyncExternalStore(
+    (cb) => {
+      listeners.add(cb);
+      return () => listeners.delete(cb);
+    },
+    () => state,
+    () => EMPTY,
+  );
+  useEffect(() => {
+    void init();
+  }, []);
+  return s;
 }
 
 export function LessonDoneButton({ lessonKey }: { lessonKey: string }) {
   const t = useTranslations("Modules");
-  const done = !!useProgress()[lessonKey];
-
-  function toggle() {
-    const p = read();
-    if (p[lessonKey]) delete p[lessonKey];
-    else p[lessonKey] = true;
-    try {
-      localStorage.setItem(KEY, JSON.stringify(p));
-    } catch {
-      return;
-    }
-    window.dispatchEvent(new Event(EVENT));
-  }
-
+  const done = useProgress().keys.has(lessonKey);
   return (
-    <button type="button" className="btn" onClick={toggle} aria-pressed={done}>
+    <button type="button" className="btn" onClick={() => toggle(lessonKey)} aria-pressed={done}>
       {done ? t("markUndone") : t("markDone")}
     </button>
   );
@@ -67,15 +108,11 @@ export function LessonDoneButton({ lessonKey }: { lessonKey: string }) {
 export function ModuleProgress({ keys }: { keys: string[] }) {
   const t = useTranslations("Modules");
   const p = useProgress();
-  const done = keys.filter((k) => p[k]).length;
-  return (
-    <span className="label">
-      {t("progress", { done, total: keys.length })}
-    </span>
-  );
+  const done = keys.filter((k) => p.keys.has(k)).length;
+  return <span className="label">{t("progress", { done, total: keys.length })}</span>;
 }
 
 export function LessonCheck({ lessonKey }: { lessonKey: string }) {
-  const done = !!useProgress()[lessonKey];
+  const done = useProgress().keys.has(lessonKey);
   return <span aria-hidden="true">{done ? "✓" : "○"}</span>;
 }
