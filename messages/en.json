@@ -1,0 +1,18 @@
+{
+  "Meta": {
+    "title": "CyberLab",
+    "description": "Learn cybersecurity, pentesting and ethical hacking with theory and hands-on isolated challenges."
+  },
+  "Nav": {
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  },
+  "Home": {
+    "title": "CyberLab",
+    "subtitle": "Learn cybersecurity from zero to expert: condensed theory and hands-on challenges in isolated environments.",
+    "status": "Under construction (Phase 1)."
+  }
+}

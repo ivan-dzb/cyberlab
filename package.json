@@ -1,0 +1,26 @@
+{
+  "name": "cyberlab",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "migrate": "node scripts/migrate.mjs"
+  },
+  "dependencies": {
+    "next": "15.5.4",
+    "next-intl": "4.3.9",
+    "pg": "8.13.1",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "@types/pg": "8.11.10",
+    "@types/react": "19.1.12",
+    "@types/react-dom": "19.1.9",
+    "typescript": "5.7.2"
+  }
+}

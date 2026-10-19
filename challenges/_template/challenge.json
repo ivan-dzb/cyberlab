@@ -1,0 +1,15 @@
+{
+  "slug": "reemplazar-slug",
+  "titulo": "Título del reto",
+  "nivel": "principiante",
+  "xp": 100,
+  "herramientas": [],
+  "imagen_docker": "cyberlab/reemplazar-slug:latest",
+  "limites": {
+    "memoria": "256m",
+    "cpus": 0.5,
+    "pids": 100,
+    "timeout_inactividad_min": 30
+  },
+  "puerto": 8080
+}

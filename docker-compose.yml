@@ -1,0 +1,38 @@
+# Desarrollo local: app + base de datos.
+# Los contenedores de retos NO se definen aquí; los crea el orquestador (Fase 2)
+# en redes aisladas por sesión.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cyberlab}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?define POSTGRES_PASSWORD en .env}
+      POSTGRES_DB: ${POSTGRES_DB:-cyberlab}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cyberlab}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      target: dev
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-cyberlab}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-cyberlab}
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

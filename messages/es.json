@@ -1,0 +1,18 @@
+{
+  "Meta": {
+    "title": "CyberLab",
+    "description": "Aprende ciberseguridad, pentesting y hacking ético con teoría y retos prácticos aislados."
+  },
+  "Nav": {
+    "language": "Idioma",
+    "theme": "Tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "themeSystem": "Sistema"
+  },
+  "Home": {
+    "title": "CyberLab",
+    "subtitle": "Aprende ciberseguridad de cero a experto: teoría condensada y retos prácticos en entornos aislados.",
+    "status": "En construcción (Fase 1)."
+  }
+}
