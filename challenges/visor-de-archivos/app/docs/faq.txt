@@ -1,0 +1,4 @@
+Preguntas frecuentes
+
+1. ¿Cómo solicito un documento? Elige uno de la lista de la página principal.
+2. ¿Dónde se guardan los archivos? En la carpeta "docs" del servidor.

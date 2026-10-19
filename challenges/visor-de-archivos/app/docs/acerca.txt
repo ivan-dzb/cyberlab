@@ -1,0 +1,4 @@
+Acerca de este visor
+
+Muestra el contenido de los archivos de texto de la carpeta de documentos.
+Los archivos internos de la empresa se guardan en /tmp/secreto, fuera de esta carpeta.

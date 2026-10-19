@@ -34,7 +34,7 @@ Fuente: plan de desarrollo (Fase 2, nov 2026). Primero el sistema de juego (band
 | US-17 | Como estudiante quiero el reto **idor-facturas** (IDOR) | Acceder a recursos ajenos cambiando un identificador | ✅ |
 | US-18 | Como estudiante quiero el reto **login-ingenuo** (inyección SQL) | Evadir autenticación con SQLi sobre un motor SQL real (SQLite en memoria) | ✅ |
 | US-19 | Como estudiante quiero el reto **pin-debil** (fuerza bruta) | PIN de 4 dígitos sin límite de intentos; enseña a automatizar peticiones | ✅ |
-| US-20 | Como estudiante quiero el reto **visor-de-archivos** (path traversal) | Leer un archivo fuera del directorio permitido | ☐ |
+| US-20 | Como estudiante quiero el reto **visor-de-archivos** (path traversal) | Leer un archivo fuera del directorio permitido | ✅ |
 
 ## Fuera de alcance de la Fase 2
 Catálogo de herramientas poblado (Fase 3), retos intermedio/avanzado (Fase 4), terminal sandbox (Fase 5), writeups escritos por usuarios.

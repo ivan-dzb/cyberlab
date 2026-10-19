@@ -1,0 +1,14 @@
+{
+  "slug": "visor-de-archivos",
+  "titulo": { "es": "El visor que sale de su carpeta", "en": "The viewer that leaves its folder" },
+  "descripcion": {
+    "es": "Un visor de documentos lee el archivo que le pides. ¿Qué pasa si le pides uno que no está en su carpeta?",
+    "en": "A document viewer reads the file you ask for. What happens if you ask for one that is not in its folder?"
+  },
+  "nivel": "principiante",
+  "xp": 50,
+  "herramientas": [],
+  "imagen_docker": "cyberlab/visor-de-archivos:latest",
+  "puerto": 8080,
+  "limites": { "memoria_mb": 64, "cpus": 0.25, "pids": 32, "timeout_inactividad_min": 30 }
+}
