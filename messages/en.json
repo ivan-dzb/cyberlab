@@ -108,7 +108,8 @@
     "title": "Challenges",
     "empty": "No challenges published yet.",
     "xp": "{n} XP",
-    "tools": "Tools"
+    "tools": "Tools",
+    "writeup": "Official writeup"
   },
   "Session": {
     "intro": "Creates your own isolated environment, with no Internet access and no access to other users. It is destroyed when you finish or when it expires.",

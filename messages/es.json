@@ -108,7 +108,8 @@
     "title": "Retos",
     "empty": "Aún no hay retos publicados.",
     "xp": "{n} XP",
-    "tools": "Herramientas"
+    "tools": "Herramientas",
+    "writeup": "Writeup oficial"
   },
   "Session": {
     "intro": "Se crea un entorno propio y aislado, sin acceso a Internet ni a otros usuarios. Se destruye al terminar o al expirar.",

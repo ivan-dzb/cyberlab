@@ -5,7 +5,9 @@ import { HintsPanel } from "@/components/hints-panel";
 import { Markdown } from "@/components/markdown";
 import { SessionPanel } from "@/components/session-panel";
 import { Link } from "@/i18n/navigation";
+import { getCurrentUser } from "@/lib/auth/session";
 import { getChallenge } from "@/lib/challenges";
+import { getWriteupForUser } from "@/lib/writeup";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +22,9 @@ export default async function ChallengePage({
   const tm = await getTranslations("Modules");
   const c = /^[a-z0-9][a-z0-9-]*$/.test(slug) ? await getChallenge(slug, locale) : null;
   if (!c) notFound();
+
+  const user = await getCurrentUser();
+  const writeup = user ? await getWriteupForUser(user.id, c.slug, locale) : null;
 
   return (
     <main className="wrap page">
@@ -38,6 +43,13 @@ export default async function ChallengePage({
         <Markdown>{c.teoria}</Markdown>
         <SessionPanel slug={c.slug} />
         <HintsPanel slug={c.slug} baseXp={c.xp} />
+        {writeup && (
+          <section className="panel writeup">
+            <p className="label">{t("writeup")}</p>
+            {writeup.fallback && <p className="notice">{tm("fallbackNotice")}</p>}
+            <Markdown>{writeup.body}</Markdown>
+          </section>
+        )}
       </article>
     </main>
   );
