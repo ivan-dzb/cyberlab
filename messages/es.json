@@ -137,5 +137,19 @@
     "flagWrong": "Esa no es la bandera.",
     "completed": "Reto completado",
     "xpAwarded": "{xp} XP"
+  },
+  "Profile": {
+    "kicker": "Perfil",
+    "level": "Nivel",
+    "xp": "{xp} XP",
+    "toNext": "{n} XP para el siguiente nivel",
+    "maxLevel": "nivel máximo",
+    "challenges": "Retos completados",
+    "lessons": "Lecciones completadas",
+    "noChallenges": "Aún no has completado ningún reto.",
+    "goChallenges": "Ver retos",
+    "noLessons": "Aún no has completado ninguna lección.",
+    "goModules": "Ver módulos",
+    "headerLevel": "Nv. {level} · {xp} XP"
   }
 }

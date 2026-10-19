@@ -137,5 +137,19 @@
     "flagWrong": "That is not the flag.",
     "completed": "Challenge completed",
     "xpAwarded": "{xp} XP"
+  },
+  "Profile": {
+    "kicker": "Profile",
+    "level": "Level",
+    "xp": "{xp} XP",
+    "toNext": "{n} XP to next level",
+    "maxLevel": "max level",
+    "challenges": "Completed challenges",
+    "lessons": "Completed lessons",
+    "noChallenges": "You have not completed any challenge yet.",
+    "goChallenges": "View challenges",
+    "noLessons": "You have not completed any lesson yet.",
+    "goModules": "View modules",
+    "headerLevel": "Lv. {level} · {xp} XP"
   }
 }

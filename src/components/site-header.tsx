@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
+import { getXp } from "@/lib/stats";
+import { levelFor } from "@/lib/xp";
 import { LocaleSwitcher } from "./locale-switcher";
 import { LogoutButton } from "./logout-button";
 import { ThemeToggle } from "./theme-toggle";
@@ -21,6 +23,8 @@ function Mark() {
 export async function SiteHeader({ theme }: { theme: Theme }) {
   const t = await getTranslations("Nav");
   const user = await getCurrentUser();
+  const tp = await getTranslations("Profile");
+  const lv = user ? levelFor(await getXp(user.id)) : null;
   return (
     <header className="site-header">
       <div className="wrap">
@@ -35,7 +39,9 @@ export async function SiteHeader({ theme }: { theme: Theme }) {
         <div className="tools">
           {user ? (
             <>
-              <span className="label account" title={user.email}>{user.email}</span>
+              <Link href="/profile" className="label account" title={user.email}>
+                {tp("headerLevel", { level: lv!.level, xp: lv!.xp })}
+              </Link>
               <LogoutButton />
             </>
           ) : (

@@ -317,3 +317,11 @@ a.panel:hover::before, a.panel:hover::after { width: 22px; height: 22px; }
 .flag-form input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--glow); }
 .flag-ok { margin: 0; color: var(--c-principiante); font-family: var(--font-mono); font-size: 0.9rem; }
 .label.done { color: var(--c-principiante); }
+
+.tools a.account { text-decoration: none; color: var(--fg); border: 1px solid var(--line-2); padding: 0.28rem 0.6rem; }
+.tools a.account:hover { border-color: var(--accent); color: var(--accent); }
+.xp-card { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+.big-num { display: block; font-family: var(--font-display); font-size: 4rem; line-height: 1; }
+.xp-bar-wrap { flex: 1 1 16rem; display: grid; gap: 0.6rem; }
+.xp-meter { display: flex; gap: 3px; }
+.xp-meter i { flex: 1; height: 8px; }
