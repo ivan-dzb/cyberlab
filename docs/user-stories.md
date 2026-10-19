@@ -32,7 +32,7 @@ Fuente: plan de desarrollo (Fase 2, nov 2026). Primero el sistema de juego (band
 | US-15 | Como estudiante quiero el reto **robots-secretas** (reconocimiento web) | Descubrir rutas ocultas vía `robots.txt`; teoría, 3 pistas, writeup y `solve.mjs` | ✅ |
 | US-16 | Como estudiante quiero el reto **cookie-confiada** (control de acceso roto) | Manipular una cookie de rol no firmada | ✅ |
 | US-17 | Como estudiante quiero el reto **idor-facturas** (IDOR) | Acceder a recursos ajenos cambiando un identificador | ✅ |
-| US-18 | Como estudiante quiero el reto **login-ingenuo** (inyección SQL) | Evadir autenticación con SQLi sobre un motor SQL real (SQLite en memoria) | ☐ |
+| US-18 | Como estudiante quiero el reto **login-ingenuo** (inyección SQL) | Evadir autenticación con SQLi sobre un motor SQL real (SQLite en memoria) | ✅ |
 | US-19 | Como estudiante quiero el reto **pin-debil** (fuerza bruta) | PIN de 4 dígitos sin límite de intentos; enseña a automatizar peticiones | ☐ |
 | US-20 | Como estudiante quiero el reto **visor-de-archivos** (path traversal) | Leer un archivo fuera del directorio permitido | ☐ |
 

@@ -1,0 +1,14 @@
+{
+  "slug": "login-ingenuo",
+  "titulo": { "es": "Un login demasiado confiado", "en": "An overly trusting login" },
+  "descripcion": {
+    "es": "Un formulario de acceso arma su consulta SQL pegando lo que escribes. Aprende qué ocurre cuando los datos se mezclan con el código.",
+    "en": "A login form builds its SQL query by pasting what you type. Learn what happens when data is mixed with code."
+  },
+  "nivel": "principiante",
+  "xp": 50,
+  "herramientas": [],
+  "imagen_docker": "cyberlab/login-ingenuo:latest",
+  "puerto": 8080,
+  "limites": { "memoria_mb": 96, "cpus": 0.25, "pids": 32, "timeout_inactividad_min": 30 }
+}
