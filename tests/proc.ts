@@ -20,7 +20,7 @@ export function freePort(): Promise<number> {
 export type Proc = { child: ChildProcess; output: () => string; stop: () => Promise<void>; exited: Promise<number | null> };
 
 export async function startProc(script: string, env: Record<string, string>, readyMarker?: string): Promise<Proc> {
-  const child: ChildProcess = spawn(process.execPath, [path.join(root, script)], { env: { PATH: process.env.PATH ?? "", ...env } as NodeJS.ProcessEnv, stdio: ["ignore", "pipe", "pipe"] });
+  const child: ChildProcess = spawn(process.execPath, [path.join(root, script)], { env: { PATH: process.env.PATH ?? "", ...env } as unknown as NodeJS.ProcessEnv, stdio: ["ignore", "pipe", "pipe"] });
   let out = "";
   child.stdout!.on("data", (d) => (out += d));
   child.stderr!.on("data", (d) => (out += d));
