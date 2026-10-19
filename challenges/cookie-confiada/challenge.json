@@ -1,0 +1,14 @@
+{
+  "slug": "cookie-confiada",
+  "titulo": { "es": "La cookie que decide quién eres", "en": "The cookie that decides who you are" },
+  "descripcion": {
+    "es": "Un portal confía en una cookie para saber tu rol. Aprende por qué nunca se debe confiar en datos que controla el cliente.",
+    "en": "A portal trusts a cookie to know your role. Learn why client-controlled data must never be trusted."
+  },
+  "nivel": "principiante",
+  "xp": 50,
+  "herramientas": [],
+  "imagen_docker": "cyberlab/cookie-confiada:latest",
+  "puerto": 8080,
+  "limites": { "memoria_mb": 64, "cpus": 0.25, "pids": 32, "timeout_inactividad_min": 30 }
+}
