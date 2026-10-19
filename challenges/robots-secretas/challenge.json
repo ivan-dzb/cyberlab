@@ -1,0 +1,14 @@
+{
+  "slug": "robots-secretas",
+  "titulo": { "es": "Rutas que nadie debería ver", "en": "Paths nobody should see" },
+  "descripcion": {
+    "es": "Una tienda en línea oculta una sección interna. Aprende a descubrir contenido que no aparece en ningún enlace.",
+    "en": "An online store hides an internal section. Learn to discover content that no link points to."
+  },
+  "nivel": "principiante",
+  "xp": 50,
+  "herramientas": [],
+  "imagen_docker": "cyberlab/robots-secretas:latest",
+  "puerto": 8080,
+  "limites": { "memoria_mb": 64, "cpus": 0.25, "pids": 32, "timeout_inactividad_min": 30 }
+}
