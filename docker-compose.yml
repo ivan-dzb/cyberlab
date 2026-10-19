@@ -1,6 +1,14 @@
-# Desarrollo local: app + base de datos.
-# Los contenedores de retos NO se definen aquí; los crea el orquestador (Fase 2)
-# en redes aisladas por sesión.
+# Desarrollo local.
+#
+# Redes (todas las de control son internal: sin Internet):
+#   default    db, app y gateway (este último publica el puerto de retos al host)
+#   orch       app <-> orchestrator
+#   gwctl      orchestrator <-> gateway (API admin de rutas)
+#   dockerctl  orchestrator <-> dockerproxy (la app web NO está aquí: no puede hablar con Docker)
+# Las redes de cada sesión de reto (cyberlab-s-<id>, internal) las crea el orquestador en runtime.
+#
+# Seguridad: SOLO el orquestador habla con Docker, y siempre a través de dockerproxy
+# (que solo expone contenedores y redes). Ni la app web ni el gateway tocan el socket.
 services:
   db:
     image: postgres:16-alpine
@@ -12,6 +20,7 @@ services:
       - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks: [default]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cyberlab}"]
       interval: 5s
@@ -24,6 +33,9 @@ services:
       target: dev
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER:-cyberlab}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-cyberlab}
+      ORCH_URL: http://orchestrator:4000
+      ORCH_TOKEN: ${ORCH_TOKEN:?define ORCH_TOKEN en .env}
+      LAB_BASE_URL: ${LAB_BASE_URL:-http://{sid}.lab.localhost:8081}
       WATCHPACK_POLLING: "true"
     ports:
       - "3000:3000"
@@ -31,9 +43,58 @@ services:
       - .:/app
       - /app/node_modules
       - /app/.next
+    networks: [default, orch]
     depends_on:
       db:
         condition: service_healthy
+
+  orchestrator:
+    build: ./orchestrator
+    environment:
+      DOCKER_URL: http://dockerproxy:2375
+      ORCH_TOKEN: ${ORCH_TOKEN:?define ORCH_TOKEN en .env}
+      GATEWAY_URL: http://gateway:8082
+      GATEWAY_TOKEN: ${GATEWAY_TOKEN:?define GATEWAY_TOKEN en .env}
+      GATEWAY_CONTAINER: cyberlab-gateway
+    networks: [orch, gwctl, dockerctl]
+    depends_on: [dockerproxy, gateway]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+
+  gateway:
+    build: ./gateway
+    container_name: cyberlab-gateway
+    environment:
+      GATEWAY_TOKEN: ${GATEWAY_TOKEN:?define GATEWAY_TOKEN en .env}
+      ADMIN_ALLOWED_HOST: orchestrator
+    ports:
+      - "8081:8081"
+    networks: [default, gwctl]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+
+  dockerproxy:
+    image: tecnativa/docker-socket-proxy:0.3.0
+    environment:
+      CONTAINERS: 1
+      NETWORKS: 1
+      POST: 1
+      # Imágenes, volúmenes, swarm, sistema, etc. quedan denegados. OJO: con CONTAINERS=1 el proxy aún
+      # permite /containers/*/exec y create con opciones arbitrarias; la política real la aplica el
+      # orquestador, por eso es el único servicio en la red dockerctl.
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks: [dockerctl]
+
+networks:
+  orch:
+    internal: true
+  gwctl:
+    internal: true
+  dockerctl:
+    internal: true
 
 volumes:
   pgdata:
