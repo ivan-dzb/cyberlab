@@ -116,3 +116,10 @@ export function LessonCheck({ lessonKey }: { lessonKey: string }) {
   const done = useProgress().keys.has(lessonKey);
   return <span aria-hidden="true">{done ? "✓" : "○"}</span>;
 }
+
+/** Solo para tests: reinicia el estado del módulo entre casos. */
+export function __resetProgressStoreForTests() {
+  state = EMPTY;
+  started = false;
+  listeners.clear();
+}

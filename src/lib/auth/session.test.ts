@@ -33,9 +33,9 @@ describe("createSession", () => {
   it("la cookie es httpOnly, SameSite=Lax, path / y caduca en ~30 días", async () => {
     query.mockResolvedValue([]);
     await createSession("u");
-    const [, , opts] = jar.api.set.mock.calls[0];
+    const opts = jar.api.set.mock.calls[0][2]!;
     expect(opts).toMatchObject({ httpOnly: true, sameSite: "lax", path: "/" });
-    const days = (opts.expires.getTime() - Date.now()) / 86_400_000;
+    const days = (opts.expires!.getTime() - Date.now()) / 86_400_000;
     expect(days).toBeGreaterThan(29.9);
     expect(days).toBeLessThan(30.1);
   });
@@ -44,10 +44,10 @@ describe("createSession", () => {
     query.mockResolvedValue([]);
     vi.stubEnv("NODE_ENV", "production");
     await createSession("u");
-    expect(jar.api.set.mock.calls[0][2].secure).toBe(true);
+    expect(jar.api.set.mock.calls[0][2]?.secure).toBe(true);
     vi.stubEnv("NODE_ENV", "development");
     await createSession("u");
-    expect(jar.api.set.mock.calls[1][2].secure).toBe(false);
+    expect(jar.api.set.mock.calls[1][2]?.secure).toBe(false);
     vi.unstubAllEnvs();
   });
 

@@ -18,7 +18,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <b>●</b> {t("kicker")}
         </p>
         <h1>
-          {t("h1a")} <em>{t("h1b")}</em>
+          {t("h1a")} <em>{t("h1b")}</em>{" "}
           <br />
           {t("h1c")}
         </h1>

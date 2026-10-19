@@ -22,7 +22,10 @@ export function makeCookieJar(initial: Record<string, string> = {}) {
     store,
     api: {
       get: (name: string) => (store.has(name) ? { name, value: store.get(name)! } : undefined),
-      set: vi.fn((name: string, value: string) => void store.set(name, value)),
+      set: vi.fn((name: string, value: string, _opts?: { expires?: Date; secure?: boolean; httpOnly?: boolean; sameSite?: string; path?: string }) => {
+        void _opts;
+        store.set(name, value);
+      }),
       delete: vi.fn((name: string) => void store.delete(name)),
     },
   };
