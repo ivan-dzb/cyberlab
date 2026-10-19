@@ -1,6 +1,6 @@
 # CyberLab
 
-Plataforma web pública y gratuita para aprender pentesting y hacking ético con retos prácticos aislados en contenedores. **Estado: Fase 1 (esqueleto)** – sin retos vulnerables ni autenticación completa todavía.
+Plataforma web pública y gratuita para aprender pentesting y hacking ético con lecciones y retos prácticos aislados en contenedores. **Estado: Fase 1 completada** (esqueleto + aislamiento). Backlog en [docs/user-stories.md](docs/user-stories.md).
 
 Contexto del proyecto: [CLAUDE.md](CLAUDE.md) · Arquitectura: [docs/architecture.md](docs/architecture.md)
 
@@ -12,26 +12,20 @@ Contexto del proyecto: [CLAUDE.md](CLAUDE.md) · Arquitectura: [docs/architectur
 ## Instalación
 
 ```bash
-cp .env.example .env      # edita POSTGRES_PASSWORD
-docker compose up --build
+cp .env.example .env      # edita POSTGRES_PASSWORD y genera ORCH_TOKEN y GATEWAY_TOKEN (openssl rand -hex 32)
+npm run build:challenges  # construye las imágenes de los retos (requiere Docker en el host)
+docker compose up -d --build
 ```
 
 En otra terminal, aplica el esquema:
 
 ```bash
 docker compose exec app npm run migrate
+docker compose exec app npm run sync:challenges
+docker compose exec app npm run test:isolation   # verifica el aislamiento (19 comprobaciones)
 ```
 
-Abre http://localhost:3000 y comprueba http://localhost:3000/api/health.
-
-### Sin Docker para la app
-
-```bash
-npm install
-docker compose up -d db
-npm run migrate   # requiere DATABASE_URL (ver .env.example)
-npm run dev
-```
+Abre http://localhost:3000 y comprueba http://localhost:3000/api/health. Los retos se abren en `http://<sesión>.lab.localhost:8081` (los navegadores resuelven `*.localhost` a tu máquina).
 
 ## Estructura
 

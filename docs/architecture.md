@@ -25,16 +25,53 @@ El orquestador levanta **un contenedor nuevo por cada sesión de usuario** que e
 - **Postgres**: modelo claramente relacional (usuarios, retos, progreso, relación N:M retos↔herramientas), integridad con claves foráneas y constraints, y `CHECK`/enums para niveles y estados.
 - **SQL plano con `pg`** en lugar de un ORM: esquema pequeño, migraciones explícitas y revisables, menos magia.
 
-## Aislamiento por contenedor
+## Aislamiento por contenedor (implementado en Fase 1)
 
-Principios (se implementan desde la Fase 1 en la estructura; el orquestador completo llega en Fase 2):
+```
+Navegador ──► Next.js (web, :3000) ──► orchestrator (:4000, red orch) ──► dockerproxy ──► Docker
+    │                                        │ crea red + contenedor por sesión
+    │                                        └─► gateway admin (:8082, red gwctl, solo desde el orquestador)
+    └──► gateway público (:8081)  <sid>.lab.<dominio> ──► contenedor del reto (red cyberlab-s-<sid>, internal)
+```
 
-- Un contenedor por sesión (`ContainerSession`), creado al iniciar y destruido por `expira_en` (30–60 min de inactividad).
-- Red Docker **por sesión** con `internal: true`: sin salida a Internet, al host ni a otros contenedores. El acceso del usuario al reto pasa por un proxy inverso controlado por el orquestador que enruta solo a esa sesión.
-- Límites: `mem_limit`, `cpus`, `pids_limit`; usuario no-root; `cap_drop: ALL`; `no-new-privileges`; FS de solo lectura cuando sea posible; nunca `privileged` ni montar `docker.sock`.
-- El orquestador es el único componente con acceso a la Docker API; idealmente vía un socket proxy con permisos mínimos (no exponer el socket a la app web directamente).
-- Rate limiting en login y creación de sesiones; logs de actividad por sesión para detectar abuso.
-- Reaper periódico: destruye contenedores con `expira_en` vencido y reconcilia `ContainerSession` con el estado real de Docker.
+**Servicios y redes** (`docker-compose.yml`):
+
+| Servicio | Redes | Rol |
+|---|---|---|
+| `app` | default, orch | UI + API. **No** tiene acceso a Docker ni al admin del gateway |
+| `orchestrator` | orch, gwctl, dockerctl | Único que habla con Docker (vía `dockerproxy`). Es el punto de política |
+| `dockerproxy` | dockerctl | Socket proxy (solo contenedores y redes) |
+| `gateway` | default, gwctl | Sirve cada reto desde su propio origen; API admin protegida por token **y** por IP del orquestador |
+| `db` | default | Postgres |
+
+Las redes `orch`, `gwctl` y `dockerctl` son `internal` (sin Internet).
+
+**Política que aplica el orquestador a cada contenedor de reto** (ignora cualquier opción equivalente en la petición):
+imagen solo `cyberlab/*`; usuario `65534` (nobody); FS raíz de solo lectura + `/tmp` tmpfs `noexec`; `cap_drop ALL`; `no-new-privileges`; límites de memoria (sin swap), CPU y pids; `nofile` 256; sin puertos publicados; **red propia `internal`** por sesión (sin Internet, sin host, sin otras sesiones).
+
+**Ciclo de vida de una sesión**
+1. `POST /api/sessions` (auth, rate limit 10/h, una sesión activa por usuario por índice único parcial). Se genera una bandera por sesión (solo se guarda su hash SHA-256).
+2. El orquestador crea red + contenedor, conecta el gateway a esa red y registra la ruta.
+3. El usuario abre `http://<sid>.lab.localhost:8081`. El **id de sesión (UUID v4) es la capacidad de acceso**: no es adivinable. Cada reto vive en un origen distinto al de la plataforma, por lo que un XSS en un reto no puede tocar cookies ni la API de la web.
+4. Inactividad: el gateway cuenta peticiones; el *reaper* (en la app, con advisory lock de Postgres) extiende `expira_en` por actividad real (tope absoluto de 2 h), expira y destruye sesiones vencidas, cierra arranques atascados y destruye contenedores huérfanos.
+5. Eventos en `session_event` (inicio, extensión, fin, expiración, error, tráfico alto, huérfana).
+
+**Limitaciones conocidas de la Fase 1**
+- Reiniciar el gateway olvida las rutas: las sesiones activas quedan inaccesibles hasta que expiran.
+- El gateway no soporta WebSockets.
+- Con `CONTAINERS=1` el socket proxy aún permite `exec` y `create` con opciones arbitrarias; por eso solo el orquestador (que valida) está en `dockerctl`. Para producción conviene endurecer más (p. ej. runtime gVisor/Kata, rootless Docker, o un host dedicado a retos).
+- La IP del cliente para rate limiting sale de `X-Forwarded-For`: en producción el proxy de entrada debe sobrescribirlo.
+- Los términos de uso son un borrador y requieren revisión legal antes del lanzamiento público.
+
+**Pruebas**: `npm run test:isolation` (19 comprobaciones desde dentro de un contenedor canario `_canary`) corre en CI y falla si se rompe el aislamiento.
+
+## Autenticación y límites
+
+- Registro/login con correo + contraseña; `scrypt` (N=2^17, r=8, p=1) con sal; sesión = token aleatorio en cookie `httpOnly` + `SameSite=Lax` (+`Secure` en producción), solo se guarda su hash.
+- Login: respuesta idéntica para correo inexistente y contraseña errónea, con verificación de hash ficticio (sin diferencia de tiempo).
+- Endpoints que cambian estado exigen `Content-Type: application/json` y `Origin` coincidente (defensa CSRF adicional).
+- Rate limiting de ventana fija en Postgres (`rate_limit`): login por IP (30/15 min) y por cuenta (5/15 min), registro por IP (5/h), sesiones de reto por usuario (10/h), progreso por usuario (120/min). Límite por cuenta implica que un atacante puede bloquear temporalmente un login ajeno (trade-off asumido).
+- Términos de uso: aceptación obligatoria al registrarse; se guarda versión y fecha.
 
 ## Modelo de datos
 
@@ -84,12 +121,12 @@ content/modules/m08-conceptos-seguridad/
 - Markdown se renderiza con `react-markdown` (sin HTML crudo) + `remark-gfm` + `rehype-slug`.
 - Rutas: `/[locale]/modules`, `/[locale]/modules/[module]`, `/[locale]/modules/[module]/[lesson]`.
 - `next.config.mjs` incluye `content/**` en el build standalone (`outputFileTracingIncludes`).
-- **Progreso**: provisional en `localStorage` (clave `cyberlab:progress`, `"<modulo>/<leccion>": true`). Al implementar auth pasará a una tabla `lesson_progress(user_id, module_slug, lesson_slug, completado_en)`; la BD solo guardará estado del usuario, no contenido.
+- **Progreso**: tabla `lesson_progress(user_id, module_slug, lesson_slug)` vía `/api/progress` (claves validadas contra el contenido). Sin sesión se usa `localStorage` y se importa una vez al iniciar sesión. La BD solo guarda estado del usuario, no contenido.
 - Entidades futuras en BD: `lesson_progress`, `quiz_attempt`, y la relación módulo↔reto por slug (`challenge.slug`).
 
 ## Fases (resumen)
 
-1. Esqueleto: estructura, auth, aislamiento base, estructura de retos.
+1. Esqueleto + aislamiento: estructura, auth, rate limiting, términos, progreso, catálogo de retos, orquestador, gateway, reaper, pruebas de aislamiento. **Completada** (ver `docs/user-stories.md`).
 2. Orquestador de contenedores y primer reto de prueba.
 3+. Contenido (retos por nivel), catálogo de herramientas, writeups, progreso/XP.
 
@@ -97,3 +134,4 @@ content/modules/m08-conceptos-seguridad/
 
 - **2026-10-18** – Next.js App Router + Postgres + SQL plano; migraciones numeradas con runner propio (`scripts/migrate.mjs`).
 - **2026-10-18** – Auth propia pospuesta hasta revisar la estructura; el esquema ya incluye `password_hash`.
+- **2026-10-19** – Fase 1: scrypt nativo (sin dependencias nativas), rate limiting en Postgres, orquestador + gateway separados con redes segmentadas, un origen por sesión de reto, reaper en la app con advisory lock.

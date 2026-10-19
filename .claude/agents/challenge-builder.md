@@ -12,11 +12,11 @@ Tema/vulnerabilidad (ej. "XSS almacenado"), nivel (principiante|intermedio|avanz
 ## Pasos
 1. Elige `slug` en kebab-case (ej. `xss-almacenado`). Verifica que `challenges/<slug>/` no exista.
 2. Copia `challenges/_template/` a `challenges/<slug>/`.
-3. Completa `challenge.json` (slug, titulo, nivel, herramientas, xp, imagen_docker = `cyberlab/<slug>:latest`).
-4. Escribe `teoria.md`: qué es la vulnerabilidad, por qué ocurre, cómo se explota a nivel conceptual, cómo se mitiga, y objetivos del reto. Sin soluciones paso a paso en la teoría (van en writeups/pistas).
+3. Completa `challenge.json` (slug, `titulo{es,en}`, `descripcion{es,en}`, nivel, herramientas, xp, `imagen_docker` = `cyberlab/<slug>:latest`, puerto, limites).
+4. Escribe `teoria.es.md` y `teoria.en.md` (sin H1): qué es la vulnerabilidad, por qué ocurre, cómo se explota a nivel conceptual, cómo se mitiga, y objetivos del reto. Sin soluciones paso a paso en la teoría (van en writeups/pistas).
 5. Escribe la app vulnerable en `challenges/<slug>/app/` con dependencias mínimas. La vulnerabilidad debe estar confinada al contenedor y ser la única intencionada.
-6. Ajusta `Dockerfile`: imagen base mínima con versión fijada, usuario no-root, sin secretos reales, `EXPOSE` solo del puerto necesario, flag generada/inyectada en runtime.
-7. Crea una migración (delega al agente `db-migration`) que inserte el reto y sus relaciones en `challenge` / `challenge_tool`.
+6. Ajusta `Dockerfile`: imagen base mínima con versión fijada, sin secretos reales, `EXPOSE` solo del puerto necesario. La bandera llega por la variable de entorno `FLAG` (distinta por sesión). El orquestador fuerza usuario `nobody`, FS de solo lectura (solo `/tmp`), sin red saliente: la app no debe escribir fuera de `/tmp`.
+7. No hace falta migración: el reto se registra con `npm run sync:challenges` (valida `challenge.json`).
 8. Verifica que existan las herramientas referenciadas en `tool` (si no, usa la skill `add-tool`).
 9. Termina pidiendo revisión al agente `security-reviewer`; no marques el reto como integrado hasta que apruebe.
 
