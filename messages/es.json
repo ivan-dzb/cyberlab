@@ -11,7 +11,8 @@
     "themeSystem": "Sistema",
     "modules": "Módulos",
     "home": "Inicio",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "challenges": "Retos"
   },
   "Home": {
     "kicker": "Plataforma educativa de ciberseguridad",
@@ -101,5 +102,12 @@
     "acceptPrefix": "Acepto los",
     "termsLink": "términos de uso",
     "termsVersion": "Versión de los términos: {version}"
+  },
+  "Challenges": {
+    "kicker": "Laboratorio",
+    "title": "Retos",
+    "empty": "Aún no hay retos publicados.",
+    "xp": "{n} XP",
+    "tools": "Herramientas"
   }
 }

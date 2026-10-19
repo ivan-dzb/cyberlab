@@ -11,7 +11,8 @@
     "themeSystem": "System",
     "modules": "Modules",
     "home": "Home",
-    "login": "Log in"
+    "login": "Log in",
+    "challenges": "Challenges"
   },
   "Home": {
     "kicker": "Cybersecurity learning platform",
@@ -101,5 +102,12 @@
     "acceptPrefix": "I accept the",
     "termsLink": "terms of use",
     "termsVersion": "Terms version: {version}"
+  },
+  "Challenges": {
+    "kicker": "Lab",
+    "title": "Challenges",
+    "empty": "No challenges published yet.",
+    "xp": "{n} XP",
+    "tools": "Tools"
   }
 }

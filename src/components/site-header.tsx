@@ -30,6 +30,7 @@ export async function SiteHeader({ theme }: { theme: Theme }) {
         </Link>
         <nav className="nav">
           <Link href="/modules">{t("modules")}</Link>
+          <Link href="/challenges">{t("challenges")}</Link>
         </nav>
         <div className="tools">
           {user ? (

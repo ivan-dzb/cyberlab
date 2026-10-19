@@ -1,15 +1,16 @@
 {
   "slug": "reemplazar-slug",
-  "titulo": "Título del reto",
+  "titulo": { "es": "Título del reto", "en": "Challenge title" },
+  "descripcion": { "es": "Una frase sobre qué se practica.", "en": "One sentence on what is practiced." },
   "nivel": "principiante",
   "xp": 100,
   "herramientas": [],
   "imagen_docker": "cyberlab/reemplazar-slug:latest",
+  "puerto": 8080,
   "limites": {
-    "memoria": "256m",
-    "cpus": 0.5,
-    "pids": 100,
+    "memoria_mb": 128,
+    "cpus": 0.25,
+    "pids": 64,
     "timeout_inactividad_min": 30
-  },
-  "puerto": 8080
+  }
 }

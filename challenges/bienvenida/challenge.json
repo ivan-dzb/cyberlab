@@ -1,0 +1,19 @@
+{
+  "slug": "bienvenida",
+  "titulo": { "es": "Bienvenida: encuentra la bandera", "en": "Welcome: find the flag" },
+  "descripcion": {
+    "es": "Tu primer entorno aislado. Una página web sencilla esconde una bandera; aprende a inspeccionar lo que el navegador te muestra.",
+    "en": "Your first isolated environment. A simple web page hides a flag; learn to inspect what the browser shows you."
+  },
+  "nivel": "principiante",
+  "xp": 10,
+  "herramientas": [],
+  "imagen_docker": "cyberlab/bienvenida:latest",
+  "puerto": 8080,
+  "limites": {
+    "memoria_mb": 64,
+    "cpus": 0.25,
+    "pids": 32,
+    "timeout_inactividad_min": 30
+  }
+}
