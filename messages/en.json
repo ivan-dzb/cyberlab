@@ -10,7 +10,8 @@
     "themeDark": "Dark",
     "themeSystem": "System",
     "modules": "Modules",
-    "home": "Home"
+    "home": "Home",
+    "login": "Log in"
   },
   "Home": {
     "kicker": "Cybersecurity learning platform",
@@ -74,5 +75,27 @@
   "Footer": {
     "tag": "CYBERLAB · EDUCATIONAL USE",
     "disclaimer": "Practice only in the platform's labs or on systems you own. Using these techniques against systems without authorization is illegal."
+  },
+  "Auth": {
+    "loginTitle": "Log in",
+    "registerTitle": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 10 characters.",
+    "submitLogin": "Log in",
+    "submitRegister": "Create account",
+    "noAccount": "No account?",
+    "registerLink": "Create one",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "logout": "Log out",
+    "errors": {
+      "invalidInput": "Check the email and that the password has at least 10 characters.",
+      "registerFailed": "Could not create the account. If you already have one, log in.",
+      "invalidCredentials": "Incorrect email or password.",
+      "rateLimited": "Too many attempts. Wait a moment and try again.",
+      "badRequest": "Invalid request.",
+      "server": "Server error. Try again."
+    }
   }
 }

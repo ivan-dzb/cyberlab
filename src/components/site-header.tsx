@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { getCurrentUser } from "@/lib/auth/session";
 import { LocaleSwitcher } from "./locale-switcher";
+import { LogoutButton } from "./logout-button";
 import { ThemeToggle } from "./theme-toggle";
 
 type Theme = "system" | "light" | "dark";
@@ -18,6 +20,7 @@ function Mark() {
 
 export async function SiteHeader({ theme }: { theme: Theme }) {
   const t = await getTranslations("Nav");
+  const user = await getCurrentUser();
   return (
     <header className="site-header">
       <div className="wrap">
@@ -29,6 +32,14 @@ export async function SiteHeader({ theme }: { theme: Theme }) {
           <Link href="/modules">{t("modules")}</Link>
         </nav>
         <div className="tools">
+          {user ? (
+            <>
+              <span className="label account" title={user.email}>{user.email}</span>
+              <LogoutButton />
+            </>
+          ) : (
+            <Link href="/login" className="nav-link">{t("login")}</Link>
+          )}
           <LocaleSwitcher />
           <ThemeToggle initial={theme} />
         </div>

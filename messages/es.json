@@ -10,7 +10,8 @@
     "themeDark": "Oscuro",
     "themeSystem": "Sistema",
     "modules": "Módulos",
-    "home": "Inicio"
+    "home": "Inicio",
+    "login": "Iniciar sesión"
   },
   "Home": {
     "kicker": "Plataforma educativa de ciberseguridad",
@@ -74,5 +75,27 @@
   "Footer": {
     "tag": "CYBERLAB · USO EDUCATIVO",
     "disclaimer": "Practica solo en los laboratorios de la plataforma o en sistemas propios. Usar estas técnicas contra sistemas ajenos sin autorización es ilegal."
+  },
+  "Auth": {
+    "loginTitle": "Iniciar sesión",
+    "registerTitle": "Crear cuenta",
+    "email": "Correo",
+    "password": "Contraseña",
+    "passwordHint": "Mínimo 10 caracteres.",
+    "submitLogin": "Entrar",
+    "submitRegister": "Crear cuenta",
+    "noAccount": "¿No tienes cuenta?",
+    "registerLink": "Crear una",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "loginLink": "Iniciar sesión",
+    "logout": "Salir",
+    "errors": {
+      "invalidInput": "Revisa el correo y que la contraseña tenga al menos 10 caracteres.",
+      "registerFailed": "No se pudo crear la cuenta. Si ya tienes una, inicia sesión.",
+      "invalidCredentials": "Correo o contraseña incorrectos.",
+      "rateLimited": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+      "badRequest": "Solicitud no válida.",
+      "server": "Error del servidor. Inténtalo de nuevo."
+    }
   }
 }

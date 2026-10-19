@@ -285,3 +285,21 @@ a.panel:hover::before, a.panel:hover::after { width: 22px; height: 22px; }
   .wordmark span { display: none; }
   .stats > div { border-right: 0; border-bottom: 1px solid var(--line); }
 }
+
+/* ---------- formularios / cuenta ---------- */
+.narrow { max-width: 28rem; }
+.form { display: grid; gap: 1.1rem; margin: 1.5rem 0; }
+.form label { display: grid; gap: 0.35rem; }
+.form input[type="email"], .form input[type="password"], .form input[type="text"] {
+  background: var(--bg); color: var(--fg); border: 1px solid var(--line-2); border-radius: 0;
+  padding: 0.65rem 0.75rem; font: inherit; width: 100%;
+}
+.form input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--glow); }
+.form-error { margin: 0; color: var(--accent); font-family: var(--font-mono); font-size: 0.85rem; }
+.btn:disabled { opacity: 0.5; cursor: wait; transform: none; box-shadow: none; }
+.linklike { background: none; border: 0; padding: 0; font: inherit; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); cursor: pointer; text-decoration: underline; text-decoration-color: var(--line-2); }
+.linklike:hover { color: var(--accent); }
+.tools { align-items: center; }
+.tools .account { max-width: 12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-link { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; }
+@media (max-width: 640px) { .tools .account { display: none; } }
