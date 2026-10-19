@@ -5,7 +5,7 @@ import { logSessionEvent } from "@/lib/session-events";
 
 const LOCK_ID = 7_340_001; // advisory lock: un solo reaper a la vez aunque haya varias instancias
 const MAX_TOTAL_MIN = 120;
-const HIGH_TRAFFIC_PER_TICK = 1200; // peticiones por intervalo antes de registrar 'trafico_alto'
+const HIGH_TRAFFIC_PER_TICK = 30000; // peticiones por intervalo antes de registrar 'trafico_alto' (un barrido de 10 000 PINs es legítimo)
 
 const lastHits = new Map<string, number>();
 

@@ -1,0 +1,14 @@
+{
+  "slug": "pin-debil",
+  "titulo": { "es": "La caja de cuatro dígitos", "en": "The four-digit safe" },
+  "descripcion": {
+    "es": "Una caja fuerte digital se abre con un PIN de cuatro dígitos y no limita los intentos. Aprende por qué la fuerza bruta funciona y cómo automatizarla.",
+    "en": "A digital safe opens with a four-digit PIN and does not limit attempts. Learn why brute force works and how to automate it."
+  },
+  "nivel": "principiante",
+  "xp": 50,
+  "herramientas": [],
+  "imagen_docker": "cyberlab/pin-debil:latest",
+  "puerto": 8080,
+  "limites": { "memoria_mb": 64, "cpus": 0.5, "pids": 32, "timeout_inactividad_min": 30 }
+}
