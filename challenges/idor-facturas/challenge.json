@@ -1,0 +1,14 @@
+{
+  "slug": "idor-facturas",
+  "titulo": { "es": "Facturas ajenas", "en": "Someone else's invoices" },
+  "descripcion": {
+    "es": "Un portal de facturación identifica cada documento con un número. ¿Qué pasa si pides uno que no es tuyo?",
+    "en": "A billing portal identifies each document by a number. What happens if you ask for one that is not yours?"
+  },
+  "nivel": "principiante",
+  "xp": 50,
+  "herramientas": [],
+  "imagen_docker": "cyberlab/idor-facturas:latest",
+  "puerto": 8080,
+  "limites": { "memoria_mb": 64, "cpus": 0.25, "pids": 32, "timeout_inactividad_min": 30 }
+}
