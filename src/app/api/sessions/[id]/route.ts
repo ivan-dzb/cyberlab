@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { query } from "@/lib/db";
 import { checkSameOrigin, jsonError } from "@/lib/http";
 import { destroyContainerSession } from "@/lib/orchestrator";
+import { logSessionEvent } from "@/lib/session-events";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -28,5 +29,6 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     return jsonError("server", 502);
   }
   await query("UPDATE container_session SET estado = 'terminada', terminada_en = now() WHERE id = $1", [id]);
+  await logSessionEvent(id, user.id, "fin");
   return NextResponse.json({ ok: true });
 }

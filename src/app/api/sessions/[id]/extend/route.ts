@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth/session";
 import { query } from "@/lib/db";
 import { checkSameOrigin, jsonError } from "@/lib/http";
+import { logSessionEvent } from "@/lib/session-events";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const EXTEND_MIN = 30;
@@ -23,5 +24,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     [id, user.id, EXTEND_MIN, MAX_TOTAL_MIN],
   );
   if (!rows[0]) return jsonError("notFound", 404);
+  await logSessionEvent(id, user.id, "extension");
   return NextResponse.json({ expiresAt: rows[0].expira_en });
 }

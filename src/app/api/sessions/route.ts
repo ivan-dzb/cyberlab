@@ -6,6 +6,7 @@ import { query } from "@/lib/db";
 import { checkSameOrigin, jsonError } from "@/lib/http";
 import { createContainerSession, sessionUrl } from "@/lib/orchestrator";
 import { enforce } from "@/lib/rate-limit";
+import { logSessionEvent } from "@/lib/session-events";
 
 const bodySchema = z.object({ slug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/).max(64) });
 
@@ -73,9 +74,11 @@ export async function POST(req: Request) {
       env: { FLAG: flag },
     });
     await query("UPDATE container_session SET container_id = $2, estado = 'activa' WHERE id = $1", [sid, containerId]);
+    await logSessionEvent(sid, user.id, "inicio", { reto: parsed.data.slug });
   } catch (err) {
     console.error("session create:", err);
     await query("UPDATE container_session SET estado = 'error', terminada_en = now() WHERE id = $1", [sid]);
+    await logSessionEvent(sid, user.id, "error", { fase: "crear", mensaje: String(err) });
     return jsonError("server", 502);
   }
 

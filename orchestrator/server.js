@@ -170,6 +170,10 @@ http
       if (req.method === "GET" && url.pathname === "/sessions") {
         return send(res, 200, { sessions: await listSessions() });
       }
+      if (req.method === "GET" && url.pathname === "/activity") {
+        const g = await gateway("GET", "/routes");
+        return send(res, 200, { activity: (g && g.routes) || [] });
+      }
       const m = url.pathname.match(/^\/sessions\/([^/]+)$/);
       if (req.method === "DELETE" && m) {
         await destroySession(m[1]);

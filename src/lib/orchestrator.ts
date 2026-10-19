@@ -34,6 +34,21 @@ export async function destroyContainerSession(sid: string): Promise<void> {
   if (!res.ok) throw new Error(`orchestrator destroy: ${res.status}`);
 }
 
+export type Activity = { sid: string; lastSeen: number; hits: number };
+
+/** Última actividad (peticiones al gateway) de cada sesión. */
+export async function getActivity(): Promise<Activity[]> {
+  const res = await call("GET", "/activity");
+  if (!res.ok) throw new Error(`orchestrator activity: ${res.status}`);
+  return (await res.json()).activity;
+}
+
+export async function listContainerSessions(): Promise<{ sid: string; state: string; created: number }[]> {
+  const res = await call("GET", "/sessions");
+  if (!res.ok) throw new Error(`orchestrator list: ${res.status}`);
+  return (await res.json()).sessions;
+}
+
 /** URL pública de un reto: origen propio por sesión, distinto al de la plataforma. */
 export function sessionUrl(sid: string): string {
   const tpl = process.env.LAB_BASE_URL ?? "http://{sid}.lab.localhost:8081";

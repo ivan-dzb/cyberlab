@@ -36,6 +36,7 @@ services:
       ORCH_URL: http://orchestrator:4000
       ORCH_TOKEN: ${ORCH_TOKEN:?define ORCH_TOKEN en .env}
       LAB_BASE_URL: ${LAB_BASE_URL:-http://{sid}.lab.localhost:8081}
+      REAPER_INTERVAL_SEC: "20"
       WATCHPACK_POLLING: "true"
     ports:
       - "3000:3000"

@@ -19,7 +19,7 @@ if (TOKEN.length < 32) {
   process.exit(1);
 }
 
-/** sid -> { upstream, lastSeen } */
+/** sid -> { upstream, lastSeen, hits } */
 const routes = new Map();
 
 // ---------- proxy público ----------
@@ -32,6 +32,7 @@ http
       return res.end("Sesión no encontrada o expirada");
     }
     route.lastSeen = Date.now();
+    route.hits += 1;
 
     const headers = {};
     for (const [k, v] of Object.entries(req.headers)) if (!HOP.has(k)) headers[k] = v;
@@ -86,7 +87,7 @@ http
     if (!authorized(req)) return send(res, 401, { error: "unauthorized" });
     const url = new URL(req.url, "http://x");
     if (req.method === "GET" && url.pathname === "/routes") {
-      return send(res, 200, { routes: [...routes].map(([sid, r]) => ({ sid, lastSeen: r.lastSeen })) });
+      return send(res, 200, { routes: [...routes].map(([sid, r]) => ({ sid, lastSeen: r.lastSeen, hits: r.hits })) });
     }
     const m = url.pathname.match(/^\/routes\/([^/]+)$/);
     if (!m || !SID_RE.test(m[1])) return send(res, 404, { error: "not found" });
@@ -110,7 +111,7 @@ http
       if (typeof body.upstream !== "string" || !UPSTREAM_RE.test(body.upstream) || !body.upstream.includes(`cl-${m[1]}:`)) {
         return send(res, 400, { error: "upstream inválido" });
       }
-      routes.set(m[1], { upstream: body.upstream, lastSeen: Date.now() });
+      routes.set(m[1], { upstream: body.upstream, lastSeen: Date.now(), hits: 0 });
       return send(res, 200, { ok: true });
     }
     send(res, 405, { error: "method not allowed" });
