@@ -40,6 +40,8 @@ jobs:
         run: docker compose exec -T app npm run migrate
       - name: Isolation tests
         run: docker compose exec -T app npm run test:isolation
+      - name: Every challenge is solvable
+        run: docker compose exec -T app npm run test:challenges
       - name: Dump logs on failure
         if: failure()
         run: docker compose logs --tail 100

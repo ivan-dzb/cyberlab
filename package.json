@@ -10,7 +10,8 @@
     "migrate": "node scripts/migrate.mjs",
     "sync:challenges": "node scripts/sync-challenges.mjs",
     "build:challenges": "node scripts/build-challenges.mjs",
-    "test:isolation": "node scripts/isolation-test.mjs"
+    "test:isolation": "node scripts/isolation-test.mjs",
+    "test:challenges": "node scripts/test-challenges.mjs"
   },
   "dependencies": {
     "gray-matter": "4.0.3",

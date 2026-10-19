@@ -28,7 +28,7 @@ Fuente: plan de desarrollo (Fase 2, nov 2026). Primero el sistema de juego (band
 | US-11 | Como usuario quiero ver mi perfil con XP, nivel y retos completados | Página `/profile`; nivel por umbrales de XP; lista de retos y lecciones completados; XP visible en el encabezado | ✅ |
 | US-12 | Como usuario quiero pistas escalonadas si me atasco | Pistas por reto en es/en; se desbloquean una a una; cada pista reduce el XP (mínimo 40 %); estado guardado en BD | ✅ |
 | US-13 | Como usuario quiero ver el writeup oficial después de completar un reto | `writeup.{es,en}.md` por reto; el servidor solo lo entrega a quien completó el reto (nunca va en el catálogo público) | ✅ |
-| US-14 | Como mantenedor quiero comprobar automáticamente que cada reto es resoluble | `solve.mjs` por reto; `npm run test:challenges` inicia cada reto, lo resuelve y verifica que obtiene la bandera de esa sesión; corre en CI | ☐ |
+| US-14 | Como mantenedor quiero comprobar automáticamente que cada reto es resoluble | `solve.mjs` por reto; `npm run test:challenges` inicia cada reto, lo resuelve y verifica que obtiene la bandera de esa sesión; corre en CI | ✅ |
 | US-15 | Como estudiante quiero el reto **robots-secretas** (reconocimiento web) | Descubrir rutas ocultas vía `robots.txt`; teoría, 3 pistas, writeup y `solve.mjs` | ☐ |
 | US-16 | Como estudiante quiero el reto **cookie-confiada** (control de acceso roto) | Manipular una cookie de rol no firmada | ☐ |
 | US-17 | Como estudiante quiero el reto **idor-facturas** (IDOR) | Acceder a recursos ajenos cambiando un identificador | ☐ |
