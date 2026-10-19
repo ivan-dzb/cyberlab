@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 
@@ -9,6 +9,9 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Hasta hidratar, el envío nativo del formulario podría poner la contraseña en la URL: se bloquea el botón.
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -40,7 +43,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="form panel">
+    <form method="post" onSubmit={onSubmit} className="form panel">
       <label>
         <span className="label">{t("email")}</span>
         <input name="email" type="email" autoComplete="email" required maxLength={254} />
@@ -70,7 +73,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           {t(`errors.${error}` as never)}
         </p>
       )}
-      <button className="btn" type="submit" disabled={busy}>
+      <button className="btn" type="submit" disabled={busy || !hydrated}>
         {t(mode === "login" ? "submitLogin" : "submitRegister")}
       </button>
     </form>

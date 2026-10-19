@@ -97,9 +97,11 @@ function useProgress(): State {
 
 export function LessonDoneButton({ lessonKey }: { lessonKey: string }) {
   const t = useTranslations("Modules");
-  const done = useProgress().keys.has(lessonKey);
+  const { keys, mode } = useProgress();
+  const done = keys.has(lessonKey);
+  // Deshabilitado hasta conocer el estado inicial: un clic antes de hidratar/cargar se perdería o se revertiría.
   return (
-    <button type="button" className="btn" onClick={() => toggle(lessonKey)} aria-pressed={done}>
+    <button type="button" className="btn" onClick={() => toggle(lessonKey)} aria-pressed={done} disabled={mode === "loading"}>
       {done ? t("markUndone") : t("markDone")}
     </button>
   );

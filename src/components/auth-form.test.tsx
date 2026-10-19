@@ -90,6 +90,18 @@ describe("AuthForm (login)", () => {
   });
 });
 
+describe("AuthForm: seguridad del envío", () => {
+  it("el formulario usa POST (nunca GET): una contraseña no puede acabar en la URL si falla JS", () => {
+    const { container } = renderIntl(<AuthForm mode="login" />);
+    expect(container.querySelector("form")).toHaveAttribute("method", "post");
+  });
+
+  it("el botón está habilitado una vez hidratado", async () => {
+    renderIntl(<AuthForm mode="login" />);
+    await waitFor(() => expect(screen.getByRole("button", { name: /entrar/i })).toBeEnabled());
+  });
+});
+
 describe("AuthForm (register)", () => {
   it("muestra la pista de 10 caracteres y la casilla de términos obligatoria con enlace", () => {
     renderIntl(<AuthForm mode="register" />);

@@ -123,6 +123,31 @@ describe("progreso sin sesión (localStorage)", () => {
   });
 });
 
+describe("estado de carga inicial (regresión: clics perdidos antes de hidratar)", () => {
+  it("el botón está deshabilitado mientras se carga el estado y se habilita al terminar", async () => {
+    let release!: (r: Response) => void;
+    fetchMock.mockReturnValue(new Promise<Response>((resolve) => (release = resolve)));
+    renderIntl(<Everything />);
+    const button = screen.getByRole("button", { name: "Marcar como completada" });
+    expect(button).toBeDisabled();
+    await userEvent.click(button); // un clic en esta fase no debe hacer nada
+    expect(fetchMock).toHaveBeenCalledTimes(1); // solo la carga inicial
+    release(reply(401));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Marcar como completada" })).toBeEnabled());
+    expect(localStorage.getItem("cyberlab:progress")).toBeNull();
+  });
+
+  it("tras cargar, el primer clic se conserva (modo local)", async () => {
+    fetchMock.mockResolvedValue(reply(401));
+    renderIntl(<Everything />);
+    const button = await screen.findByRole("button", { name: "Marcar como completada" });
+    await waitFor(() => expect(button).toBeEnabled());
+    await userEvent.click(button);
+    expect(screen.getByRole("button", { name: "Marcar como pendiente" })).toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem("cyberlab:progress")!)).toEqual({ [KEY]: true });
+  });
+});
+
 describe("LessonCheck", () => {
   it("muestra ○ si la lección no está completada", async () => {
     fetchMock.mockResolvedValue(reply(200, { keys: [] }));
