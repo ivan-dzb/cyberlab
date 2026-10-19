@@ -1,5 +1,3 @@
-# Welcome: find the flag
-
 ## What it is
 
 A *flag* is a secret string that proves you completed a challenge. In this challenge the flag is hidden in a simple web page running in **your own container**, isolated from the network and from other users.

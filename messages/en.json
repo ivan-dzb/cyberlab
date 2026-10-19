@@ -109,5 +109,25 @@
     "empty": "No challenges published yet.",
     "xp": "{n} XP",
     "tools": "Tools"
+  },
+  "Session": {
+    "intro": "Creates your own isolated environment, with no Internet access and no access to other users. It is destroyed when you finish or when it expires.",
+    "start": "Start challenge",
+    "starting": "Starting…",
+    "open": "Open challenge",
+    "extend": "Extend 30 min",
+    "end": "End",
+    "remaining": "Time left",
+    "loginToStart": "Log in to start this challenge",
+    "otherActive": "You already have an active challenge. End it from its page to start another.",
+    "errors": {
+      "activeSession": "You already have an active session.",
+      "rateLimited": "Too many attempts. Wait a moment.",
+      "notFound": "The session no longer exists.",
+      "server": "Could not complete the action. Try again.",
+      "badRequest": "Invalid request.",
+      "invalidInput": "Invalid request.",
+      "unauthorized": "Log in again."
+    }
   }
 }

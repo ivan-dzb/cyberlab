@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Clearance } from "@/components/clearance";
 import { Markdown } from "@/components/markdown";
+import { SessionPanel } from "@/components/session-panel";
 import { Link } from "@/i18n/navigation";
 import { getChallenge } from "@/lib/challenges";
 
@@ -34,6 +35,7 @@ export default async function ChallengePage({
           {c.tools.length > 0 && <span className="label">{t("tools")}: {c.tools.join(", ")}</span>}
         </div>
         <Markdown>{c.teoria}</Markdown>
+        <SessionPanel slug={c.slug} />
       </article>
     </main>
   );

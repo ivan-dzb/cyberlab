@@ -1,5 +1,3 @@
-# Bienvenida: encuentra la bandera
-
 ## Qué es
 
 Una *bandera* (flag) es una cadena secreta que demuestra que completaste un reto. En este reto la bandera está escondida en una página web simple que corre en **tu propio contenedor**, aislado de la red y de otros usuarios.

@@ -109,5 +109,25 @@
     "empty": "Aún no hay retos publicados.",
     "xp": "{n} XP",
     "tools": "Herramientas"
+  },
+  "Session": {
+    "intro": "Se crea un entorno propio y aislado, sin acceso a Internet ni a otros usuarios. Se destruye al terminar o al expirar.",
+    "start": "Iniciar reto",
+    "starting": "Iniciando…",
+    "open": "Abrir reto",
+    "extend": "Extender 30 min",
+    "end": "Terminar",
+    "remaining": "Tiempo restante",
+    "loginToStart": "Inicia sesión para iniciar este reto",
+    "otherActive": "Ya tienes un reto activo. Termínalo desde su página para iniciar otro.",
+    "errors": {
+      "activeSession": "Ya tienes una sesión activa.",
+      "rateLimited": "Demasiados intentos. Espera un momento.",
+      "notFound": "La sesión ya no existe.",
+      "server": "No se pudo completar la acción. Inténtalo de nuevo.",
+      "badRequest": "Solicitud no válida.",
+      "invalidInput": "Solicitud no válida.",
+      "unauthorized": "Inicia sesión de nuevo."
+    }
   }
 }
